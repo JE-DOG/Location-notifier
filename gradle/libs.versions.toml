@@ -1,0 +1,88 @@
+[versions]
+
+#AndroidX
+
+    androidx-activity-compose = "1.8.0"
+    androidx-core = "1.12.0"
+    androidx-junit = "1.1.5"
+    androidx-lifecycle-runtime-ktx = "2.6.2"
+    androidx-core-ktx = "1.12.0"
+
+#Compose
+
+    compose-bom = "2023.03.00"
+    compose-compiler = "1.4.3"
+    compose-navigation = "2.7.5"
+
+#Other
+
+    room = "2.5.0"
+    dagger = "2.50"
+    agp = "8.1.0"
+    kotlin = "1.8.10"
+    espresso-core = "3.5.1"
+    junit = "4.13.2"
+    coroutines = "1.7.3"
+
+[libraries]
+
+#AndroidX
+
+    androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activity-compose" }
+    androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "androidx-core-ktx" }
+    androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "androidx-lifecycle-runtime-ktx" }
+
+#Compose
+
+    compose-navigation = { module = "androidx.navigation:navigation-compose", version.ref = "compose-navigation"}
+
+    compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+    compose-ui = { module = "androidx.compose.ui:ui" }
+    compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+    compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+    compose-material3 = { module = "androidx.compose.material3:material3" }
+    compose-material = { module = "androidx.compose.material:material" }
+
+#Compose Tests
+    compose-junit-ui-test = { module = "androidx.compose.ui:ui-test-junit4" }
+    compose-junit-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
+    compose-junit-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
+
+#Storage (Room)
+
+    room = { module = "androidx.room:room-runtime", version.ref = "room" }
+    room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+    room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
+#DI (Dagger)
+
+    dagger-core = { module = "com.google.dagger:dagger", version.ref = "dagger" }
+    dagger-android = { module = "com.google.dagger:dagger-android", version.ref = "dagger" }
+    dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
+
+#Asynchrony
+
+    kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+
+#Tests
+
+#Junit
+
+    junit = { module = "junit:junit", version.ref = "junit" }
+    junit-extension-androidx = { module = "androidx.test.ext:junit", version.ref = "androidx-junit" }
+
+#Espresso
+
+    espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso-core" }
+
+# Dependencies of the included build-logic
+
+    android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+    kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+
+[plugins]
+
+    android-application = { id = "com.android.application", version.ref = "agp" }
+    android-library = { id = "com.android.library", version.ref = "agp" }
+    kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+    kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
