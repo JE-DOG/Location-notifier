@@ -5,10 +5,10 @@ import org.osmdroid.util.GeoPoint
 
 interface LocationManager {
 
-    fun getLocation(): GeoPoint
+    fun getLocation(): GeoPoint?
 
-    fun broadcastLocation(): Flow<GeoPoint>
+    fun broadcastLocation(secondsInterval: Long): Flow<GeoPoint>
 
-    fun isLocationNearby(point: GeoPoint, meters: Int)
+    fun isLocationNearby(geoPoint: GeoPoint, meters: Int): Boolean
 
 }
