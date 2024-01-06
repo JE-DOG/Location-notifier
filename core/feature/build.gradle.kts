@@ -1,5 +1,6 @@
 plugins {
     id("je_dog.android.library")
+    id("je_dog.android.compose")
 }
 
 android {
@@ -10,5 +11,12 @@ dependencies {
 
     implementation( project(":core") )
     implementation( project(":core:domain") )
+
+    with(libs){
+
+        compileOnly(gms.location)
+        compileOnly(osmdroid)
+
+    }
 
 }
