@@ -25,6 +25,8 @@
     coroutines = "1.7.3"
     osmdroid = "6.1.13"
     gms-location = "21.0.1"
+appcompat = "1.6.1"
+material = "1.11.0"
 
 [libraries]
 
@@ -86,6 +88,8 @@
 
     android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
     kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 

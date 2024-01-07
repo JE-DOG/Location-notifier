@@ -1,12 +1,11 @@
-package ru.je_dog.domain.location_list
+package ru.je_dog.data.location_list.storage
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.jetbrains.annotations.VisibleForTesting
 import ru.je_dog.core.domain.model.GeoPointDomain
-import kotlin.random.Random
 
-interface LocationRepository {
+interface LocationStorageDataSource {
 
     fun getAllLocation(): Flow<List<GeoPointDomain>>
 
@@ -21,7 +20,7 @@ interface LocationRepository {
     @VisibleForTesting
     class Mock(
         var isSuccess: Boolean = true
-    ): LocationRepository{
+    ): LocationStorageDataSource{
 
         override fun getAllLocation(): Flow<List<GeoPointDomain>> = flow {
 

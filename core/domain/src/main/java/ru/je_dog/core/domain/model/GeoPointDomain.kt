@@ -4,6 +4,8 @@ import org.jetbrains.annotations.VisibleForTesting
 import kotlin.random.Random
 
 data class GeoPointDomain(
+    val id: Int? = null,
+    val name: String = "",
     val latitude: Double,
     val longitude: Double
 ){
@@ -12,8 +14,8 @@ data class GeoPointDomain(
 
         @VisibleForTesting
         fun mock() = GeoPointDomain(
-            Random.nextDouble(),
-            Random.nextDouble()
+            latitude = Random.nextDouble(),
+            longitude = Random.nextDouble()
         )
 
     }
