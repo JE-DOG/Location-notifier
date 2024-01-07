@@ -32,6 +32,8 @@ class KotlinLibraryConventionPlugin: Plugin<Project> {
             with(DependenciesName){
                 with(libs){
 
+                    implementation(findLibrary(coroutines_core))
+                    implementation(findLibrary(jUnit))
                     //Dagger
                     implementation(findLibrary(dagger_core))
                     kapt(findLibrary(dagger_compiler))
