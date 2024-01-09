@@ -32,6 +32,8 @@
             <option value="$PROJECT_DIR$/data/location-list" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/domain/location-list" />
+            <option value="$PROJECT_DIR$/feature" />
+            <option value="$PROJECT_DIR$/feature/location-list" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
