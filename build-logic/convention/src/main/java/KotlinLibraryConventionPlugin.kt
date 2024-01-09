@@ -4,9 +4,11 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import ru.je_dog.location_notifier.build_logic.convention.core.ext.applyIfNotFind
 import ru.je_dog.location_notifier.build_logic.convention.dependencies.DependenciesName
 import ru.je_dog.location_notifier.convention.core.ext.implementation
 import ru.je_dog.location_notifier.convention.core.ext.kapt
+import ru.je_dog.location_notifier.convention.core.ext.testImplementation
 import ru.je_dog.location_notifier.convention.core.ext.versionCatalog
 
 class KotlinLibraryConventionPlugin: Plugin<Project> {
@@ -17,8 +19,8 @@ class KotlinLibraryConventionPlugin: Plugin<Project> {
 
         with(pluginManager){
 
-            apply("org.jetbrains.kotlin.jvm")
-            apply("org.jetbrains.kotlin.kapt")
+            applyIfNotFind("org.jetbrains.kotlin.jvm")
+            applyIfNotFind("org.jetbrains.kotlin.kapt")
 
         }
 
@@ -33,7 +35,7 @@ class KotlinLibraryConventionPlugin: Plugin<Project> {
                 with(libs){
 
                     implementation(findLibrary(coroutines_core))
-                    implementation(findLibrary(jUnit))
+                    testImplementation(findLibrary(jUnit))
                     //Dagger
                     implementation(findLibrary(dagger_core))
                     kapt(findLibrary(dagger_compiler))

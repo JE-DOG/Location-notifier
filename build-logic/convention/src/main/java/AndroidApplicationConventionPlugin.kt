@@ -5,6 +5,7 @@ import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
+import ru.je_dog.location_notifier.build_logic.convention.core.ext.applyIfNotFind
 import ru.je_dog.location_notifier.convention.core.ext.androidTestImplementation
 import ru.je_dog.location_notifier.convention.core.ext.implementation
 import ru.je_dog.location_notifier.convention.core.ext.implementationProject
@@ -21,9 +22,9 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
 
         with(pluginManager){
 
-            apply("com.android.application")
-            apply("org.jetbrains.kotlin.android")
-            apply("org.jetbrains.kotlin.kapt")
+            applyIfNotFind("com.android.application")
+            applyIfNotFind("org.jetbrains.kotlin.android")
+            applyIfNotFind("org.jetbrains.kotlin.kapt")
 
         }
 
