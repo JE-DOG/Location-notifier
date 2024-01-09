@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Permissinos-->
+    <!--Notification message-->
+    <string name="notification_location_goal_notify_title">You got to the location</string>
+    <string name="notification_location_start_notify_title">Broadcast location start</string>
+    <string name="notification_location_active_notify_title">Meters to the location: </string>
+    <!--Extra keys-->
+    <string name="meters_extra_key">meters_extra_key</string>
+    <string name="goal_geo_point_extra_key">goal_geo_point_extra_key</string>
+    <!--Error message-->
     <string name="notification_permission_denied">Notification permission denied</string>
+    <string name="something_went_wrong">Something went wrong</string>
 
 </resources>

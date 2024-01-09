@@ -1,6 +1,7 @@
 plugins {
     id("je_dog.android.library")
     id("je_dog.android.compose")
+    id("kotlin-parcelize")
 }
 
 android {

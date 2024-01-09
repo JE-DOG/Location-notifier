@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.notification
+package ru.je_dog.core.feature.base.notification
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -20,7 +20,7 @@ abstract class NotificationChannelService(
 
     fun notify(
         notificationId: Int,
-        notification: Notification.Builder.() -> Notification
+        notification: Notification
     ){
 
         context.checkPermission(
@@ -35,6 +35,20 @@ abstract class NotificationChannelService(
 
     }
 
+    fun getNotificationBuilder(
+        notification: Notification.Builder = Notification.Builder(context),
+        notificationBuilder: Notification.Builder.() -> Notification.Builder
+    ): Notification.Builder {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
+            notification.apply {
+                setChannelId(channel.id)
+                setSmallIcon(R.drawable.ic_launcher_foreground)
+            }
+        }
+
+        return notificationBuilder(notification)
+    }
+
     protected open fun onPermissionDenied(){
         Toast.makeText(context, R.string.notification_permission_denied, Toast.LENGTH_SHORT).show()
     }
@@ -42,18 +56,11 @@ abstract class NotificationChannelService(
     @SuppressLint("MissingPermission")
     protected open fun onPermissionGranted(
         notificationId: Int,
-        notification: Notification.Builder.() -> Notification
+        notification: Notification
     ){
-
-        val notificationBuilder = Notification.Builder(context).apply {
-            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
-                setChannelId(channel.id)
-            }
-        }
-
         notificationService.notify(
             notificationId,
-            notification(notificationBuilder)
+            notification
         )
     }
 

@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.location
+package ru.je_dog.core.feature.base.location
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import org.osmdroid.util.GeoPoint
 import ru.je_dog.core.feature.ext.lineMeters
+import ru.je_dog.core.feature.model.GeoPointPresentation
 
 class LocationManagerImpl(
     private val context: Context,
@@ -23,15 +24,15 @@ class LocationManagerImpl(
     }
 
     @SuppressLint("MissingPermission")
-    override fun getLocation(): GeoPoint? {
+    override fun getLocation(): GeoPointPresentation? {
 
-        var geoPoint: GeoPoint? = null
+        var geoPoint: GeoPointPresentation? = null
 
         fusedLocationProviderClient.lastLocation.addOnSuccessListener { location ->
 
-            geoPoint = GeoPoint(
-                location.latitude,
-                location.longitude
+            geoPoint = GeoPointPresentation(
+                latitude = location.latitude,
+                longitude = location.longitude
             )
 
         }
@@ -42,7 +43,7 @@ class LocationManagerImpl(
     @SuppressLint("MissingPermission")
     override fun broadcastLocation(
         secondsInterval: Long,
-    ): Flow<GeoPoint> = callbackFlow {
+    ): Flow<GeoPointPresentation> = callbackFlow {
 
 
 
@@ -52,9 +53,9 @@ class LocationManagerImpl(
 
                 locationResult.lastLocation?.let { location ->
 
-                    val geoPoint = GeoPoint(
-                        location.latitude,
-                        location.longitude
+                    val geoPoint = GeoPointPresentation(
+                        latitude = location.latitude,
+                        longitude = location.longitude
                     )
 
                     trySend(geoPoint)
@@ -76,14 +77,6 @@ class LocationManagerImpl(
         awaitClose {
             fusedLocationProviderClient.removeLocationUpdates(locationCallback)
         }
-    }
-
-    override fun isLocationNearby(geoPoint: GeoPoint, meters: Int): Boolean {
-
-        val currentGeoPoint = getLocation() ?: return false
-        val lineMeters = currentGeoPoint lineMeters geoPoint
-
-        return lineMeters <= meters
     }
 
 }
