@@ -10,6 +10,7 @@ import kotlin.random.Random
 data class GeoPointPresentation(
     val id: Int? = null,
     val name: String = "",
+    val meters: Int? = null,
     val longitude: Double,
     val latitude: Double
 ): Parcelable {
@@ -17,8 +18,8 @@ data class GeoPointPresentation(
     fun toDomain() = GeoPointDomain(
         id,
         name,
-        latitude,
-        longitude
+        latitude = latitude,
+        longitude = longitude
     )
 
     companion object {
@@ -27,8 +28,8 @@ data class GeoPointPresentation(
             GeoPointPresentation(
                 id,
                 name,
-                longitude,
-                latitude
+                latitude = longitude,
+                longitude = latitude
             )
         }
 
@@ -36,6 +37,7 @@ data class GeoPointPresentation(
         fun mock() = GeoPointPresentation(
             id = Random.nextInt(),
             name = "Some point",
+            meters = Random.nextInt(),
             longitude = Random.nextDouble(),
             latitude = Random.nextDouble(),
         )
@@ -45,6 +47,7 @@ data class GeoPointPresentation(
             GeoPointPresentation(
                 id = it,
                 name = "Some point",
+                meters = Random.nextInt(),
                 longitude = Random.nextDouble(),
                 latitude = Random.nextDouble(),
             )
