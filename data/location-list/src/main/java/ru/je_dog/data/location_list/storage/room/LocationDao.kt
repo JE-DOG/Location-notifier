@@ -19,16 +19,16 @@ interface LocationDao {
     fun getAllLocation(): List<GeoPointEntity>
 
     @Insert
-    fun addLocation(geoPoint: GeoPointEntity): Boolean
+    fun addLocation(geoPoint: GeoPointEntity)
 
     @Update
-    fun updateLocation(geoPoint: GeoPointEntity): Boolean
+    fun updateLocation(geoPoint: GeoPointEntity)
 
     @Delete
-    fun deleteLocation(geoPoint: GeoPointEntity): Boolean
+    fun deleteLocation(geoPoint: GeoPointEntity)
 
     @Query("DELETE FROM geo_point_table")
-    fun deleteAllLocation(): Boolean
+    fun deleteAllLocation()
 
     @VisibleForTesting
     class Mock(
@@ -45,34 +45,26 @@ interface LocationDao {
             }
         }
 
-        override fun addLocation(geoPoint: GeoPointEntity): Boolean {
-            return if (isSuccess){
-                true
-            }else{
+        override fun addLocation(geoPoint: GeoPointEntity) {
+            if (!isSuccess){
                 throw Exception()
             }
         }
 
-        override fun updateLocation(geoPoint: GeoPointEntity): Boolean {
-            return if (isSuccess){
-                true
-            }else{
+        override fun updateLocation(geoPoint: GeoPointEntity) {
+            if (!isSuccess){
                 throw Exception()
             }
         }
 
-        override fun deleteLocation(geoPoint: GeoPointEntity): Boolean {
-            return if (isSuccess){
-                true
-            }else{
+        override fun deleteLocation(geoPoint: GeoPointEntity) {
+            if (!isSuccess){
                 throw Exception()
             }
         }
 
-        override fun deleteAllLocation(): Boolean {
-            return if (isSuccess){
-                true
-            }else{
+        override fun deleteAllLocation() {
+            if (!isSuccess){
                 throw Exception()
             }
         }

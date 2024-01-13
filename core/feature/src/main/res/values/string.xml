@@ -8,6 +8,8 @@
 
 <!--  Words  -->
     <string name="retry">Retry</string>
+    <string name="update">Update</string>
+    <string name="delete">Delete</string>
 
 <!--  Messages  -->
     <!--Error-->

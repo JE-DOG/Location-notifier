@@ -1,4 +1,4 @@
-package ru.je_dog.locationnotifier
+package ru.je_dog.location_notifier
 
 import org.junit.Test
 

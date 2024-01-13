@@ -12,7 +12,8 @@ import kotlin.random.Random
 data class GeoPointEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val name: String,
+    val name: String = "",
+    val meters: Int? = null,
     val latitude: Double,
     val longitude: Double
 ){
@@ -34,7 +35,8 @@ data class GeoPointEntity(
                 return GeoPointEntity(
                     name = name,
                     latitude = latitude,
-                    longitude = longitude
+                    longitude = longitude,
+                    meters = meters
                 )
 
             }
@@ -44,6 +46,7 @@ data class GeoPointEntity(
         fun mock() = GeoPointEntity(
             null,
             "",
+            meters = Random.nextInt(),
             Random.nextDouble(),
             Random.nextDouble()
         )

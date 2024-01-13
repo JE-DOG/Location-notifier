@@ -1,4 +1,4 @@
-package ru.je_dog.locationnotifier
+package ru.je_dog.feature.location_list
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("ru.je_dog.locationnotifier", appContext.packageName)
+        assertEquals("ru.je_dog.feature.location_list.test", appContext.packageName)
     }
 }

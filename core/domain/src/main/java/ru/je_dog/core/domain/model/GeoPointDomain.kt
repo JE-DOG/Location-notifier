@@ -6,6 +6,7 @@ import kotlin.random.Random
 data class GeoPointDomain(
     val id: Int? = null,
     val name: String = "",
+    val meters: Int? = null,
     val latitude: Double,
     val longitude: Double
 ){

@@ -17,28 +17,41 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.annotations.VisibleForTesting
 import ru.je_dog.core.feature.ext.getShapeByIndex
 import ru.je_dog.core.feature.model.GeoPointPresentation
+import ru.je_dog.feature.location_list.R
+import ru.je_dog.feature.location_list.vm.LocationListAction
 
 @Composable
-fun LocationItem(
+internal fun LocationItem(
     geoPoint: GeoPointPresentation,
     shape: Shape = RoundedCornerShape(0),
-    onMoreClick: (GeoPointPresentation) -> Unit,
+    onMoreClick: (LocationListAction) -> Unit,
     onItemClick: (GeoPointPresentation) -> Unit
 ) {
+
+    var expanded by remember {
+        mutableStateOf(false)
+    }
 
     Row(
         Modifier
@@ -46,7 +59,7 @@ fun LocationItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(bottom = 1.dp)
-            .background(Color.Gray,shape)
+            .background(Color.Gray, shape)
             .padding(horizontal = 16.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -57,13 +70,43 @@ fun LocationItem(
 
         IconButton(
             onClick = {
-                onMoreClick(geoPoint)
+                expanded = true
             }
         ){
             Icon(
                 painter = painterResource(ru.je_dog.core.feature.R.drawable.ic_more_vertical),
                 contentDescription = "more",
                 tint = Color.LightGray
+            )
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        stringResource(id = ru.je_dog.core.feature.R.string.update)
+                    )
+                },
+                onClick = {
+                    onMoreClick(
+                        LocationListAction.UpdateLocation(geoPoint)
+                    )
+                }
+            )
+            DropdownMenuItem(
+                text = {
+                    Text(
+                        stringResource(id = ru.je_dog.core.feature.R.string.delete)
+                    )
+                },
+                onClick = {
+                    onMoreClick(
+                        LocationListAction.DeleteLocation(geoPoint)
+                    )
+                }
             )
         }
 
