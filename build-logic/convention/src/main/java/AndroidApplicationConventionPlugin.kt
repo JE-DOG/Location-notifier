@@ -4,6 +4,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.project
 import org.jetbrains.kotlin.gradle.dsl.kotlinExtension
 import ru.je_dog.location_notifier.build_logic.convention.core.ext.applyIfNotFind
 import ru.je_dog.location_notifier.convention.core.ext.androidTestImplementation
@@ -64,19 +65,21 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
         dependencies {
 
             implementationProject(":core")
+            implementationProject(":core:data")
+            implementationProject(":core:domain")
+            implementationProject(":core:feature")
 
             with(libs){
                 with(DependenciesName){
 
                     implementation(findLibrary(androidxCoreKtx))
                     implementation(findLibrary(androidxLifecycleRuntimeKtx))
+                    implementation(findLibrary(androidxActivityCompose))
 
                     testImplementation(findLibrary(jUnit))
 
                     androidTestImplementation(findLibrary(jUnitExtensionAndroidx))
                     androidTestImplementation(findLibrary(espressoCore))
-
-                    implementationProject(":core")
 
                     //Dagger
                     implementation(findLibrary(dagger_android))
