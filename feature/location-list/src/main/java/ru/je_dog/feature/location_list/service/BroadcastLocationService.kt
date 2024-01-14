@@ -2,34 +2,38 @@ package ru.je_dog.feature.location_list.service
 
 import android.app.Service
 import android.content.Intent
-import android.content.res.Resources
 import android.os.Build
 import android.os.IBinder
+import android.util.Log
 import android.widget.Toast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import ru.je_dog.core.feature.ext.lineMeters
-import ru.je_dog.core.feature.base.location.LocationManager
+import ru.je_dog.core.feature.base.location.LocationManagerImpl
+import ru.je_dog.core.feature.base.notification.ForegroundNotificationChannelService
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.core.feature.base.notification.NotificationChannelService
-import ru.je_dog.feature.location_list.R
 import java.lang.StringBuilder
-import javax.inject.Inject
 
-class BroadcastLocationService @Inject constructor (
-    private val foregroundNotificationChannel: NotificationChannelService,
-    private val locationManager: LocationManager
-): Service() {
+class BroadcastLocationService: Service() {
+
+    private val locationManager by lazy { LocationManagerImpl(baseContext) }
+    private val foregroundNotificationChannel: NotificationChannelService by lazy { ForegroundNotificationChannelService(baseContext) }
+
+    override fun onCreate() {
+        super.onCreate()
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
 
+        Log.d("BroadcastTag","Sometihng in the way")
+
         val goalGeoPoint: GeoPointPresentation = intent.run {
-            val extraKey = Resources.getSystem()
-                .getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
+            val extraKey = baseContext.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
 
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU){
                 getParcelableExtra(extraKey,GeoPointPresentation::class.java)!!
@@ -38,12 +42,13 @@ class BroadcastLocationService @Inject constructor (
             }
         }
         val foregroundNotification = foregroundNotificationChannel.getNotificationBuilder {
-            val title = Resources.getSystem()
-                .getString(ru.je_dog.core.feature.R.string.notification_location_start_notify_title)
+            val title = baseContext.getString(ru.je_dog.core.feature.R.string.notification_location_start_notify_title)
 
             setOnlyAlertOnce(true)
             setContentTitle(title)
         }
+
+        foregroundNotificationChannel.createChannel()
 
         startForeground(
             FOREGROUND_ACTIVE_NOTIFICATION_ID,
@@ -62,9 +67,8 @@ class BroadcastLocationService @Inject constructor (
                     val metersToGoal = geoPoint lineMeters goalGeoPoint
 
                     if (metersToGoal <= goalGeoPoint.meters!!){
-                        val notificationTitle = Resources.getSystem()
-                            .getString(ru.je_dog.core.feature.R.string.notification_location_goal_notify_title)
-                        val notification = foregroundNotification.apply {
+                        val notificationTitle = baseContext.getString(ru.je_dog.core.feature.R.string.notification_location_goal_notify_title)
+                        val notification = foregroundNotificationChannel.getNotificationBuilder {
                             setContentTitle(notificationTitle)
                             setOnlyAlertOnce(false)
                             setVibrate(
@@ -81,12 +85,11 @@ class BroadcastLocationService @Inject constructor (
                         stopSelf()
                     }else {
                         val notificationTitle = StringBuilder().apply {
-                            val text = Resources.getSystem()
-                                .getString(ru.je_dog.core.feature.R.string.notification_location_active_notify_title)
+                            val text = baseContext.getString(ru.je_dog.core.feature.R.string.notification_location_active_notify_title)
                             append(text)
                             append(metersToGoal)
                         }
-                        val notification = foregroundNotification.apply {
+                        val notification = foregroundNotificationChannel.getNotificationBuilder {
                             setContentTitle(
                                 notificationTitle.toString()
                             )

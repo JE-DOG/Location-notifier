@@ -16,8 +16,9 @@ data class GeoPointPresentation(
 ): Parcelable {
 
     fun toDomain() = GeoPointDomain(
-        id,
-        name,
+        id = id,
+        name = name,
+        meters = meters,
         latitude = latitude,
         longitude = longitude
     )
@@ -26,8 +27,9 @@ data class GeoPointPresentation(
 
         fun fromDomain(geoPointDomain: GeoPointDomain): GeoPointPresentation = geoPointDomain.run {
             GeoPointPresentation(
-                id,
-                name,
+                id = id,
+                name = name,
+                meters = meters,
                 latitude = longitude,
                 longitude = latitude
             )

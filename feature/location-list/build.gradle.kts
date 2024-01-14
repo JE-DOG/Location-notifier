@@ -16,7 +16,6 @@ dependencies {
     with(libs){
 
         implementation(gms.location)
-        implementation(osmdroid)
 
     }
 

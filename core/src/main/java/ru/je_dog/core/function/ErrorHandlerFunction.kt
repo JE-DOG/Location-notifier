@@ -8,3 +8,13 @@ fun isRunWithoutException(action: () -> Unit): Boolean {
         false
     }
 }
+
+suspend fun isRunWithoutExceptionSuspend(action: suspend () -> Unit): Boolean {
+    return try {
+        action()
+        true
+    }catch (_: Exception){
+        false
+    }
+}
+

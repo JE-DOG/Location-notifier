@@ -3,6 +3,7 @@ package ru.je_dog.data.location_list.storage.room
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
@@ -18,17 +19,17 @@ interface LocationDao {
     @Query("SELECT * FROM geo_point_table")
     fun getAllLocation(): List<GeoPointEntity>
 
-    @Insert
-    fun addLocation(geoPoint: GeoPointEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addLocation(geoPoint: GeoPointEntity)
 
     @Update
-    fun updateLocation(geoPoint: GeoPointEntity)
+    suspend fun updateLocation(geoPoint: GeoPointEntity)
 
-    @Delete
-    fun deleteLocation(geoPoint: GeoPointEntity)
+    @Query("DELETE FROM geo_point_table WHERE id = :geoPointId")
+    suspend fun deleteLocation(geoPointId: Int): Int
 
     @Query("DELETE FROM geo_point_table")
-    fun deleteAllLocation()
+    suspend fun deleteAllLocation()
 
     @VisibleForTesting
     class Mock(
@@ -45,25 +46,26 @@ interface LocationDao {
             }
         }
 
-        override fun addLocation(geoPoint: GeoPointEntity) {
+        override suspend fun addLocation(geoPoint: GeoPointEntity) {
             if (!isSuccess){
                 throw Exception()
             }
         }
 
-        override fun updateLocation(geoPoint: GeoPointEntity) {
+        override suspend fun updateLocation(geoPoint: GeoPointEntity) {
             if (!isSuccess){
                 throw Exception()
             }
         }
 
-        override fun deleteLocation(geoPoint: GeoPointEntity) {
+        override suspend fun deleteLocation(geoPointId: Int): Int {
             if (!isSuccess){
                 throw Exception()
             }
+            return 1
         }
 
-        override fun deleteAllLocation() {
+        override suspend fun deleteAllLocation() {
             if (!isSuccess){
                 throw Exception()
             }

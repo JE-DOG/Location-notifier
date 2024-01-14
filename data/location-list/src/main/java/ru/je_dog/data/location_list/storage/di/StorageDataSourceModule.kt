@@ -21,7 +21,7 @@ internal class StorageDataSourceModule {
             .databaseBuilder(
                 context,
                 LocationDataBase::class.java,
-                "Something"
+                "database"
             )
             .fallbackToDestructiveMigration()
             .build()

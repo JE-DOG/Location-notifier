@@ -21,6 +21,7 @@ data class GeoPointEntity(
     fun toDomain() = GeoPointDomain(
         id = id,
         name = name,
+        meters = meters,
         latitude = latitude,
         longitude = longitude
     )

@@ -6,6 +6,15 @@ plugins {
 
 android {
     namespace = "ru.je_dog.core.data.location_list"
+
+    kapt {
+        arguments {
+            arg(
+                "room.schemaLocation",
+                "$projectDir/schemas"
+            )
+        }
+    }
 }
 
 dependencies {

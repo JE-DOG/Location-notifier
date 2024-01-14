@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
@@ -17,6 +18,12 @@ abstract class NotificationChannelService(
 
     abstract val channel: NotificationChannel
     private val notificationService: NotificationManagerCompat = NotificationManagerCompat.from(context)
+
+    fun createChannel(){
+        notificationService.createNotificationChannel(
+            channel
+        )
+    }
 
     fun notify(
         notificationId: Int,

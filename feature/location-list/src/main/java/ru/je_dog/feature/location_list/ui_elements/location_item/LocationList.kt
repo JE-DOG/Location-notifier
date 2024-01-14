@@ -14,10 +14,7 @@ internal fun LazyListScope.locationList(
 ) {
 
     itemsIndexed(
-        geoPointList,
-        key = { _: Int,geoPoint: GeoPointPresentation ->
-            geoPoint.id!!
-        }
+        geoPointList
     ){ index,geoPoint ->
 
         LocationItem(

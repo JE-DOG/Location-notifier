@@ -12,5 +12,6 @@ android {
 dependencies {
 
     implementationProject(":feature:location-list")
+    implementationProject(":feature:set-geo-point")
 
 }

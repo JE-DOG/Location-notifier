@@ -1,5 +1,6 @@
 package ru.je_dog.data.location_list
 
+import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import ru.je_dog.core.domain.model.GeoPointDomain
 import ru.je_dog.data.location_list.storage.LocationStorageDataSource
@@ -9,7 +10,11 @@ class LocationRepositoryImpl(
     private val locationStorageDataSource: LocationStorageDataSource
 ): LocationRepository {
 
-    override fun getAllLocation(): Flow<List<GeoPointDomain>> = locationStorageDataSource.getAllLocation()
+    override fun getAllLocation(): Flow<List<GeoPointDomain>> {
+        Log.d("RoomDataBase","Hello from repository")
+
+        return locationStorageDataSource.getAllLocation()
+    }
 
     override suspend fun addLocation(geoPoint: GeoPointDomain): Boolean = locationStorageDataSource.addLocation(geoPoint)
 

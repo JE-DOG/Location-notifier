@@ -2,6 +2,7 @@ package ru.je_dog.feature.location_list.ui_elements.location_item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import org.jetbrains.annotations.VisibleForTesting
 import ru.je_dog.core.feature.ext.getShapeByIndex
 import ru.je_dog.core.feature.model.GeoPointPresentation
@@ -80,34 +82,42 @@ internal fun LocationItem(
             )
         }
 
-        DropdownMenu(
-            expanded = expanded,
-            onDismissRequest = { expanded = false }
-        ) {
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        stringResource(id = ru.je_dog.core.feature.R.string.update)
-                    )
-                },
-                onClick = {
-                    onMoreClick(
-                        LocationListAction.UpdateLocation(geoPoint)
-                    )
-                }
-            )
-            DropdownMenuItem(
-                text = {
-                    Text(
-                        stringResource(id = ru.je_dog.core.feature.R.string.delete)
-                    )
-                },
-                onClick = {
-                    onMoreClick(
-                        LocationListAction.DeleteLocation(geoPoint)
-                    )
-                }
-            )
+        Box {
+            DropdownMenu(
+                modifier = Modifier
+                    .align(Alignment.TopEnd),
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            stringResource(id = ru.je_dog.core.feature.R.string.update)
+                        )
+                    },
+                    onClick = {
+                        expanded = false
+
+                        onMoreClick(
+                            LocationListAction.UpdateLocation(geoPoint)
+                        )
+                    }
+                )
+                DropdownMenuItem(
+                    text = {
+                        Text(
+                            stringResource(id = ru.je_dog.core.feature.R.string.delete)
+                        )
+                    },
+                    onClick = {
+                        expanded = false
+
+                        onMoreClick(
+                            LocationListAction.DeleteLocation(geoPoint)
+                        )
+                    }
+                )
+            }
         }
 
     }
