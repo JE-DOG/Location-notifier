@@ -61,7 +61,7 @@ internal fun LocationItem(
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(bottom = 1.dp)
-            .background(Color.Gray, shape)
+            .background(MaterialTheme.colorScheme.onPrimary, shape)
             .padding(horizontal = 16.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

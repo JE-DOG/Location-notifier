@@ -11,6 +11,8 @@ fun getShapeByIndex(
     corner: Dp = 16.dp
 ) = when {
 
+    size == 1 -> RoundedCornerShape(corner)
+
     index == 0 -> RoundedCornerShape(topStart = corner,topEnd = corner)
 
     index == size - 1 -> RoundedCornerShape(bottomStart = corner, bottomEnd = corner)

@@ -97,9 +97,9 @@ internal fun LocationListScreen(
 
                 IconButton(
                     modifier = Modifier
-                        .size(80.dp)
+                        .size(75.dp)
                         .align(Alignment.BottomEnd)
-                        .padding(bottom = 30.dp, end = 30.dp)
+                        .padding(bottom = 15.dp, end = 15.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primary,
                             shape = CircleShape
@@ -107,6 +107,8 @@ internal fun LocationListScreen(
                     onClick = navigateToSetGeoPoint
                 ){
                     Icon(
+                        modifier = Modifier
+                            .size(28.dp),
                         painter = painterResource(ru.je_dog.core.feature.R.drawable.ic_add_location),
                         tint = Color.White,
                         contentDescription = "add location"

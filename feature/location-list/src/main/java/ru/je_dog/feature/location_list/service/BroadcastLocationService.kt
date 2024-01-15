@@ -10,6 +10,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import ru.je_dog.core.feature.ext.lineMeters
 import ru.je_dog.core.feature.base.location.LocationManagerImpl
 import ru.je_dog.core.feature.base.notification.ForegroundNotificationChannelService
@@ -20,10 +21,10 @@ import java.lang.StringBuilder
 class BroadcastLocationService: Service() {
 
     private val locationManager by lazy { LocationManagerImpl(baseContext) }
-    private val foregroundNotificationChannel: NotificationChannelService by lazy { ForegroundNotificationChannelService(baseContext) }
-
-    override fun onCreate() {
-        super.onCreate()
+    private val foregroundNotificationChannel: NotificationChannelService by lazy {
+        ForegroundNotificationChannelService(baseContext).apply {
+            createChannel()
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
@@ -48,8 +49,6 @@ class BroadcastLocationService: Service() {
             setContentTitle(title)
         }
 
-        foregroundNotificationChannel.createChannel()
-
         startForeground(
             FOREGROUND_ACTIVE_NOTIFICATION_ID,
             foregroundNotification.build()
@@ -59,7 +58,9 @@ class BroadcastLocationService: Service() {
 
             locationManager.broadcastLocation(5)
                 .catch {
-                    Toast.makeText(baseContext, ru.je_dog.core.feature.R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
+                    withContext(Dispatchers.Main){
+                        Toast.makeText(baseContext, ru.je_dog.core.feature.R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
+                    }
                     stopSelf()
                 }
                 .collect { geoPoint ->
@@ -81,7 +82,9 @@ class BroadcastLocationService: Service() {
                             FOREGROUND_ACTIVE_NOTIFICATION_ID,
                             notification
                         )
-                        Toast.makeText(baseContext, notificationTitle, Toast.LENGTH_SHORT).show()
+                        withContext(Dispatchers.Main){
+                            Toast.makeText(baseContext, notificationTitle, Toast.LENGTH_SHORT).show()
+                        }
                         stopSelf()
                     }else {
                         val notificationTitle = StringBuilder().apply {

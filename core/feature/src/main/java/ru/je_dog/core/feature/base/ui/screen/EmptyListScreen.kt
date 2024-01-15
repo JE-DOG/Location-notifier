@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material3.Button
@@ -36,6 +37,8 @@ fun EmptyListScreen(
     ) {
 
         Icon(
+            modifier = Modifier
+                .size(100.dp),
             painter = painterResource(icon),
             tint = MaterialTheme.colorScheme.onBackground,
             contentDescription = "error"
@@ -45,7 +48,8 @@ fun EmptyListScreen(
 
         Text(
             text = text,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onBackground
         )
 
 
