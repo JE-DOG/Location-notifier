@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -66,43 +64,60 @@ fun SetGeoPointScreen(
 
             Column(
                 modifier = Modifier
-                    .padding(horizontal = 20.dp)
                     .background(MaterialTheme.colorScheme.background, RoundedCornerShape(16.dp))
                     .padding(horizontal = 16.dp, vertical = 10.dp)
             ) {
 
                 val returnGeoPointKey = stringResource(id = R.string.set_geo_point_observe_nav_key)
-                var meters by remember {
+                var inputMeters by remember {
+                    mutableStateOf("")
+                }
+                var inputName by remember {
                     mutableStateOf("")
                 }
 
-                Text(
-                    text = stringResource(id = R.string.set_meters_goal_title)
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = inputName,
+                    onValueChange = { inputName = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                    label = {
+                        Text(text = stringResource(id = R.string.set_goal_name_title))
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(5.dp))
 
                 TextField(
-                    value = meters,
-                    onValueChange = { meters = it },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    value = inputMeters,
+                    onValueChange = { inputMeters = it },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    label = {
+                        Text(text = stringResource(id = R.string.set_goal_meters_title))
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(15.dp))
 
                 Button(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     onClick = {
                         navController.returnResult(
                             returnGeoPointKey,
                             selectGeoPoint!!.copy(
-                                meters = meters.toInt()
+                                meters = inputMeters.toInt(),
+                                name = inputName
                             )
                         )
 
                         navController.popBackStack()
                     }
                 ) {
-
+                    Text(text = stringResource(id = R.string.begin))
                 }
 
             }

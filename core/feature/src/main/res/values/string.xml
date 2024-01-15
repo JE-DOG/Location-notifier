@@ -11,6 +11,7 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="confirm">Confirm</string>
+    <string name="begin">Begin</string>
 
 <!--  Messages  -->
     <!--Error-->
@@ -19,7 +20,8 @@
     <string name="location_list_empty">Location list is empty</string>
 
 <!--  Titles  -->
-    <string name="set_meters_goal_title">Set goal meters</string>
+    <string name="set_goal_meters_title">Set goal meters</string>
+    <string name="set_goal_name_title">Set goal name</string>
 
 <!--  Keys  -->
     <!--  Extra  -->
