@@ -18,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -189,4 +190,11 @@ fun SetGeoPointScreen(
     }
     
 
+    LaunchedEffect(key1 = Unit){
+//      Return string res for top app bar title
+        navController.returnResult(
+            context.getString(R.string.top_app_bar_title_observe_nav_key),
+            context.getString(R.string.set_geo_point_screen_title)
+        )
+    }
 }

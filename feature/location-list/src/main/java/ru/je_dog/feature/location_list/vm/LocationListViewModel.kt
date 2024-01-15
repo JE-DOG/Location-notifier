@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -27,10 +28,13 @@ internal class LocationListViewModel @Inject constructor(
     private val deleteLocationUseCase: DeleteLocationUseCase,
     private val deleteAllLocationUseCase: DeleteAllLocationUseCase
 ): BaseViewModel<LocationListViewState,LocationListMutation,LocationListReducer>(
-    MutableStateFlow(LocationListViewState())
+    MutableStateFlow(LocationListViewState()),
+    LocationListReducer()
 ) {
 
-    override val reducer = LocationListReducer()
+    init {
+        action(LocationListAction.GetAllLocation)
+    }
 
     fun action(action: LocationListAction) {
 
