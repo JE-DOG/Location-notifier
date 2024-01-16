@@ -1,19 +1,25 @@
 package ru.je_dog.feature.location_list.navigation
 
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
 import ru.je_dog.feature.location_list.LocationListScreen
 import ru.je_dog.feature.location_list.di.DaggerLocationListComponent
 import ru.je_dog.feature.location_list.di.deps.LocationListComponentDepsStore
 
 fun NavGraphBuilder.locationList(
     navController: NavController,
-    navigateToSetGeoPoint: () -> Unit
+    navigateToSetGeoPoint: () -> Unit,
+    onNavigate: () -> Unit = {}
 ) {
 
     composable(LOCATION_LIST_ROUTE){
+
+        LocalAppToolBarTitle.current.value = stringResource(id = R.string.location_list_screen_title)
 
         val component = DaggerLocationListComponent.factory()
             .create(LocationListComponentDepsStore.deps)
@@ -24,6 +30,7 @@ fun NavGraphBuilder.locationList(
             viewModel = viewModel(factory = component.viewModelFactory)
         )
 
+        onNavigate()
     }
 
 }

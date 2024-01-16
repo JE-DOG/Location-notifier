@@ -146,7 +146,7 @@ fun SetGeoPointScreen(
                             }
 
                             marker.position = touchGeo
-                            controller.setCenter(touchGeo)
+                            controller.animateTo(touchGeo)
                             overlays.add(marker)
                             invalidate()
 
@@ -202,6 +202,4 @@ fun SetGeoPointScreen(
         }
         
     }
-    
-
 }

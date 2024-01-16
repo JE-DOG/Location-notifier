@@ -20,8 +20,17 @@
     <string name="location_list_empty">Location list is empty</string>
 
 <!--  Titles  -->
+<<<<<<< Updated upstream
     <string name="set_goal_meters_title">Set goal meters</string>
     <string name="set_goal_name_title">Set goal name</string>
+=======
+    <string name="set_meters_goal_title">Set goal meters</string>
+    <string name="set_goal_meters_title">Set goal meters</string>
+    <string name="set_goal_name_title">Set goal name</string>
+    <!--  Screens  -->
+    <string name="set_geo_point_screen_title">Set location</string>
+    <string name="location_list_screen_title">Location notifier</string>
+>>>>>>> Stashed changes
 
 <!--  Keys  -->
     <!--  Extra  -->
@@ -29,6 +38,7 @@
     <string name="goal_geo_point_extra_key">goal_geo_point_extra_key</string>
     <!--  Compose nav state key  -->
     <string name="set_geo_point_observe_nav_key">set_geo_point_observe_nav_key</string>
+    <string name="top_app_bar_title_observe_nav_key">top_app_bar_title_observe_nav_key</string>
     <!--  Share preference  -->
     <string name="osmdroid_map_shared_preferences_key">osmdroid_map_shared_preferences_key</string>
 
