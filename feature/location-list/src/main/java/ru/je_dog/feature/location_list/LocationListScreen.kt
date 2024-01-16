@@ -139,20 +139,20 @@ internal fun LocationListScreen(
 
 //        Observe result geo point from set-geo-point screen
         navController.observeResult(
-                context.getString(ru.je_dog.core.feature.R.string.set_geo_point_observe_nav_key),
-                null as GeoPointPresentation?
-            )
-            ?.collect { geoPoint ->
-                if (geoPoint != null){
-                    val intent = Intent(context,BroadcastLocationService::class.java).apply {
-                        val geoPointKey = context.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
-                        putExtra(geoPointKey,geoPoint)
-                    }
-                    val action = LocationListAction.AddLocation(geoPoint)
-                    viewModel.action(action)
-
-                    context.startService(intent)
+            context.getString(ru.je_dog.core.feature.R.string.set_geo_point_observe_nav_key),
+            null as GeoPointPresentation?
+        )?.collect { geoPoint ->
+            if (geoPoint != null){
+                val intent = Intent(context,BroadcastLocationService::class.java).apply {
+                    val geoPointKey = context.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
+                    putExtra(geoPointKey,geoPoint)
                 }
+                val action = LocationListAction.AddLocation(geoPoint)
+                viewModel.action(action)
+
+                context.startService(intent)
             }
+        }
+
     }
 }

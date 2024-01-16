@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
+import ru.je_dog.core.feature.navigation.AppToolBar
 import ru.je_dog.feature.location_list.LocationListScreen
 import ru.je_dog.feature.location_list.di.DaggerLocationListComponent
 import ru.je_dog.feature.location_list.di.deps.LocationListComponentDepsStore
@@ -19,7 +20,9 @@ fun NavGraphBuilder.locationList(
 
     composable(LOCATION_LIST_ROUTE){
 
-        LocalAppToolBarTitle.current.value = stringResource(id = R.string.location_list_screen_title)
+        LocalAppToolBarTitle.current.value = AppToolBar(
+            title = stringResource(id = R.string.location_list_screen_title)
+        )
 
         val component = DaggerLocationListComponent.factory()
             .create(LocationListComponentDepsStore.deps)

@@ -1,0 +1,1 @@
+ru.je_dog.set_geo_point
