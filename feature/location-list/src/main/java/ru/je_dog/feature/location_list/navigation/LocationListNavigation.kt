@@ -15,7 +15,7 @@ import ru.je_dog.feature.location_list.di.deps.LocationListComponentDepsStore
 fun NavGraphBuilder.locationList(
     navController: NavController,
     navigateToSetGeoPoint: () -> Unit,
-    onNavigate: () -> Unit = {}
+    showStopBroadcastLocationDialog: () -> Unit
 ) {
 
     composable(LOCATION_LIST_ROUTE){
@@ -30,10 +30,10 @@ fun NavGraphBuilder.locationList(
         LocationListScreen(
             navController = navController,
             navigateToSetGeoPoint = navigateToSetGeoPoint,
-            viewModel = viewModel(factory = component.viewModelFactory)
+            viewModel = viewModel(factory = component.viewModelFactory),
+            showStopBroadcastDialog = showStopBroadcastLocationDialog
         )
 
-        onNavigate()
     }
 
 }

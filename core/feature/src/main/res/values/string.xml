@@ -13,6 +13,7 @@
     <string name="update">Update</string>
     <string name="delete">Delete</string>
     <string name="confirm">Confirm</string>
+    <string name="dismiss">Dismiss</string>
     <string name="begin">Begin</string>
 
 <!--  Messages  -->
@@ -20,6 +21,8 @@
     <string name="notification_permission_denied">Notification permission denied</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="location_list_empty">Location list is empty</string>
+    <!--  Warning  -->
+    <string name="stop_broadcast_location_message">Do you want stop current broadcast?</string>
 
 <!--  Titles  -->
     <string name="set_meters_goal_title">Set goal meters</string>
@@ -28,6 +31,8 @@
     <!--  Screens  -->
     <string name="set_geo_point_screen_title">Set location</string>
     <string name="location_list_screen_title">@string/app_name</string>
+    <!--  Warning  -->
+    <string name="broadcast_location_is_active_title">Location broadcast is active</string>
 
 <!--  Keys  -->
     <!--  Extra  -->

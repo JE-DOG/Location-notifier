@@ -1,39 +1,33 @@
 package ru.je_dog.location_notifier
 
 import android.Manifest
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
-import ru.je_dog.core.feature.base.ui.theme.LocationNotifierTheme
-import androidx.activity.ComponentActivity
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import ru.je_dog.core.feature.base.ui.elements.StopBroadcastLocationDialog
 import ru.je_dog.core.feature.base.ui.elements.TopAppToolBar
+import ru.je_dog.core.feature.base.ui.theme.LocationNotifierTheme
 import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
 import ru.je_dog.core.feature.navigation.AppToolBar
 import ru.je_dog.feature.location_list.navigation.LOCATION_LIST_ROUTE
 import ru.je_dog.feature.location_list.navigation.locationList
+import ru.je_dog.feature.location_list.service.BroadcastLocationService
 import ru.je_dog.set_geo_point.navigation.navigateToSetGeoPoint
 import ru.je_dog.set_geo_point.navigation.setGeoPoint
 
@@ -48,6 +42,7 @@ class MainActivity : ComponentActivity() {
             this,
             arrayOf(
                 Manifest.permission.FOREGROUND_SERVICE,
+                Manifest.permission.FOREGROUND_SERVICE_LOCATION,
                 Manifest.permission.POST_NOTIFICATIONS,
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -56,19 +51,37 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
+
+            val navHostController = rememberNavController()
+            val appToolBar = remember {
+                mutableStateOf(
+                    AppToolBar(
+                        title = getString(ru.je_dog.core.feature.R.string.app_name)
+                    )
+                )
+            }
+            var showStopBroadcastLocationDialog by remember {
+                mutableStateOf(false)
+            }
+
+            if (showStopBroadcastLocationDialog){
+                StopBroadcastLocationDialog(
+                    onDismissRequest = { showStopBroadcastLocationDialog = false },
+                    onConfirm = {
+                        val myService = Intent(this@MainActivity, BroadcastLocationService::class.java)
+                        stopService(myService)
+
+                        showStopBroadcastLocationDialog = false
+                    }
+                )
+            }
+
             LocationNotifierTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navHostController = rememberNavController()
-                    val appToolBar = remember {
-                        mutableStateOf(
-                            AppToolBar(
-                                title = getString(ru.je_dog.core.feature.R.string.app_name)
-                            )
-                        )
-                    }
+
 
                     Scaffold(
                         topBar = {
@@ -89,6 +102,7 @@ class MainActivity : ComponentActivity() {
                                 locationList(
                                     navController = navHostController,
                                     navigateToSetGeoPoint = navHostController::navigateToSetGeoPoint,
+                                    showStopBroadcastLocationDialog = { showStopBroadcastLocationDialog = true }
                                 )
                                 setGeoPoint(
                                     navController = navHostController,

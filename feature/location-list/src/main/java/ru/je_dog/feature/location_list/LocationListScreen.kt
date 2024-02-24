@@ -1,9 +1,7 @@
 package ru.je_dog.feature.location_list
 
 import android.content.Intent
-import android.content.res.Resources
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -19,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,26 +25,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.observeOn
-import kotlinx.coroutines.flow.onEach
 import ru.je_dog.core.feature.base.ui.screen.EmptyListScreen
 import ru.je_dog.core.feature.base.ui.screen.ErrorScreen
 import ru.je_dog.core.feature.ext.observeResult
-import ru.je_dog.core.feature.ext.removeResult
-import ru.je_dog.core.feature.ext.returnResult
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.feature.location_list.service.BroadcastLocationService
 import ru.je_dog.feature.location_list.ui_elements.location_item.locationList
 import ru.je_dog.feature.location_list.vm.LocationListAction
 import ru.je_dog.feature.location_list.vm.LocationListViewModel
-import java.lang.IllegalArgumentException
-import kotlin.random.Random
 
 @Composable
 internal fun LocationListScreen(
     navController: NavController,
     viewModel: LocationListViewModel,
+    showStopBroadcastDialog: () -> Unit,
     navigateToSetGeoPoint: () -> Unit
 ) {
 
@@ -76,13 +67,15 @@ internal fun LocationListScreen(
                             onMoreClick = {
                                 viewModel.action(it)
                             },
-                            onItemClick = {
+                            onItemClick = { geoPoint ->
                                 //todo Make it better
-                                val intent = Intent(context,BroadcastLocationService::class.java).apply {
-                                    val geoPointKey: String = context.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
-                                    putExtra(geoPointKey,it)
+                                val isBroadcastStart = BroadcastLocationService.startBroadcast(
+                                    context,
+                                    geoPoint
+                                )
+                                if (!isBroadcastStart){
+                                    showStopBroadcastDialog()
                                 }
-                                context.startService(intent)
                             }
                         )
 
@@ -143,14 +136,16 @@ internal fun LocationListScreen(
             null as GeoPointPresentation?
         )?.collect { geoPoint ->
             if (geoPoint != null){
-                val intent = Intent(context,BroadcastLocationService::class.java).apply {
-                    val geoPointKey = context.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
-                    putExtra(geoPointKey,geoPoint)
+                val isBroadcastStart = BroadcastLocationService.startBroadcast(
+                    context,
+                    geoPoint
+                )
+                if (!isBroadcastStart){
+                    showStopBroadcastDialog()
                 }
+
                 val action = LocationListAction.AddLocation(geoPoint)
                 viewModel.action(action)
-
-                context.startService(intent)
             }
         }
 
