@@ -18,19 +18,15 @@ import ru.je_dog.location_notifier.convention.core.ext.kapt
 class AndroidLibraryConventionPlugin: Plugin<Project> {
 
     override fun apply(target: Project) = with(target) {
-
         val libs = versionCatalog()
 
         with(pluginManager){
-
             applyIfNotFind("com.android.library")
             applyIfNotFind("org.jetbrains.kotlin.android")
             applyIfNotFind("org.jetbrains.kotlin.kapt")
-
         }
 
         extensions.configure<LibraryExtension> {
-
             compileSdk = 34
 
             defaultConfig {
@@ -43,7 +39,6 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
                     useSupportLibrary = true
                 }
             }
-
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
@@ -56,29 +51,20 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
                     excludes += "/META-INF/{AL2.0,LGPL2.1}"
                 }
             }
-
         }
 
         dependencies {
-
             implementationProject(":core")
-
             with(libs){
                 with(DependenciesName){
-
                     implementation(findLibrary(androidxCoreKtx))
                     implementation(findLibrary(androidxLifecycleRuntimeKtx))
-
                     testImplementation(findLibrary(jUnit))
-
                     androidTestImplementation(findLibrary(jUnitExtensionAndroidx))
                     androidTestImplementation(findLibrary(espressoCore))
-
                     //Dagger
-
                     implementation(findLibrary(dagger_android))
                     kapt(findLibrary(dagger_compiler))
-
                 }
             }
         }

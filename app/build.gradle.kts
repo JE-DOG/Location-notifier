@@ -7,6 +7,19 @@ plugins {
 
 android {
     namespace = "ru.je_dog.location_notifier"
+
+    buildTypes {
+        release {
+            isMinifyEnabled = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
+    }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {

@@ -18,13 +18,9 @@ class DataConventionPlugin: Plugin<Project> {
         val libs = versionCatalog()
 
         with(pluginManager){
-
             applyIfNotFind("je_dog.android.library")
-
         }
-
         dependencies {
-
             with(DependenciesName){
                 with(libs){
 
@@ -35,7 +31,6 @@ class DataConventionPlugin: Plugin<Project> {
 
                 }
             }
-
             implementationProject(":core")
             implementationProject(":core:data")
             implementationProject(":core:domain")

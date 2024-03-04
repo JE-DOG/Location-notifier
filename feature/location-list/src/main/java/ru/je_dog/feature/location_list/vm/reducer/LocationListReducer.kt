@@ -1,9 +1,9 @@
 package ru.je_dog.feature.location_list.vm.reducer
 
-import ru.je_dog.core.feature.base.vm.reducer.Reducer
+import ru.je_dog.core.feature.common.vm.reducer.Reducer
 import ru.je_dog.feature.location_list.vm.LocationListViewState
 
-internal class LocationListReducer: Reducer<LocationListViewState,LocationListMutation> {
+internal class LocationListReducer: Reducer<LocationListViewState, LocationListMutation> {
 
     override fun invoke(mutation: LocationListMutation, currentState: LocationListViewState): LocationListViewState = when(mutation) {
 

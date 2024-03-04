@@ -9,7 +9,7 @@ import ru.je_dog.feature.location_list.vm.LocationListAction
 
 internal fun LazyListScope.locationList(
     geoPointList: List<GeoPointPresentation>,
-    onMoreClick: (LocationListAction) -> Unit,
+    onMoreClick: (LocationItemMoreAction) -> Unit,
     onItemClick: (GeoPointPresentation) -> Unit
 ) {
 

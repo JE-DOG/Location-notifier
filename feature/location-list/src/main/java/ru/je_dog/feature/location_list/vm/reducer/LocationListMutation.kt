@@ -1,6 +1,6 @@
 package ru.je_dog.feature.location_list.vm.reducer
 
-import ru.je_dog.core.feature.base.vm.reducer.Mutation
+import ru.je_dog.core.feature.common.vm.reducer.Mutation
 import ru.je_dog.core.feature.model.GeoPointPresentation
 
 internal sealed interface LocationListMutation: Mutation {

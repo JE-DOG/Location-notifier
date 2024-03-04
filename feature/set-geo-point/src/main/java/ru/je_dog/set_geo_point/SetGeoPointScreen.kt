@@ -1,24 +1,11 @@
 package ru.je_dog.set_geo_point
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,143 +14,91 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardCapitalization
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import org.osmdroid.events.MapEventsReceiver
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.CustomZoomButtonsController
-import org.osmdroid.views.MapView
-import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.common.ui.SetGoalPointDialog
+import ru.je_dog.core.feature.common.ui.Map
+import ru.je_dog.core.feature.common.ui.SetGoalPointType
 import ru.je_dog.core.feature.ext.returnResult
 import ru.je_dog.core.feature.model.GeoPointPresentation
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SetGeoPointScreen(
-    navController: NavController
+    setGoalPointType: SetGoalPointType,
+    navController: NavController,
+    navigateToBack: () -> Unit
 ) {
-
     val context = LocalContext.current
     var selectGeoPoint by remember {
-        mutableStateOf(null as GeoPointPresentation?)
+        val geoPoint = if (setGoalPointType is SetGoalPointType.Update){
+            setGoalPointType.geoPoint
+        }else {
+            null
+        }
+        mutableStateOf(geoPoint)
     }
     var showDialog by remember {
         mutableStateOf(false)
     }
-    Log.d("GeoTag","GeoPoint: $selectGeoPoint")
+    var marker: Marker? = null
 
     if (showDialog && selectGeoPoint != null){
-        Dialog(
-            onDismissRequest = { showDialog = false }
-        ) {
+        val returnGeoPointKey = stringResource(id = setGoalPointType.observeKey)
 
-            Column(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp)
-                    .background(MaterialTheme.colorScheme.background, RoundedCornerShape(16.dp))
-                    .padding(horizontal = 16.dp, vertical = 10.dp)
-            ) {
-
-                val returnGeoPointKey = stringResource(id = R.string.set_geo_point_observe_nav_key)
-                var meters by remember {
-                    mutableStateOf("")
-                }
-
-                Text(
-                    text = stringResource(id = R.string.set_meters_goal_title)
+        SetGoalPointDialog(
+            setGoalPointType = setGoalPointType,
+            geoPoint = selectGeoPoint!!,
+            onConfirm = { createdGeoPoint ->
+                navController.returnResult(
+                    returnGeoPointKey,
+                    createdGeoPoint
                 )
-
-                Spacer(modifier = Modifier.height(5.dp))
-
-                TextField(
-                    value = meters,
-                    onValueChange = { meters = it },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                )
-
-                Spacer(modifier = Modifier.height(15.dp))
-
-                Button(
-                    onClick = {
-                        navController.returnResult(
-                            returnGeoPointKey,
-                            selectGeoPoint!!.copy(
-                                meters = meters.toInt()
-                            )
-                        )
-
-                        navController.popBackStack()
-                    }
-                ) {
-
-                }
-
-            }
-
-        }
+                navigateToBack()
+            },
+            onDismiss = { showDialog = false }
+        )
     }
 
     Box {
-        
-        AndroidView(
-            factory = {
-                MapView(it).apply {
+        //todo startPoint by user location
+        Map(
+            mapEventsReceiver = { mapView ->
 
-                    val marker = Marker(this).apply {
-                        icon = ActivityCompat.getDrawable(context, R.drawable.ic_add_location)
-                    }
-                    val startPoint = GeoPoint(42.0,49.0)
-                    val listener = object : MapEventsReceiver {
+                object : MapEventsReceiver {
+                    override fun singleTapConfirmedHelper(touchGeo: GeoPoint?): Boolean {
+                        selectGeoPoint = touchGeo?.run {
+                            GeoPointPresentation(
+                                longitude = longitude,
+                                latitude = latitude
+                            )
+                        }
 
-                        override fun singleTapConfirmedHelper(touchGeo: GeoPoint?): Boolean {
-                            selectGeoPoint = touchGeo?.run {
-                                GeoPointPresentation(
-                                    longitude = longitude,
-                                    latitude = latitude
-                                )
-                            }
-
-                            marker.position = touchGeo
-                            controller.setCenter(touchGeo)
+                        with(mapView){
+                            marker?.position = touchGeo
+                            controller.animateTo(touchGeo)
                             overlays.add(marker)
                             invalidate()
-
-                            return true
                         }
-
-                        override fun longPressHelper(p: GeoPoint?): Boolean {
-                            return false
-                        }
-
-
+                        return true
                     }
-                    val overlayListener = MapEventsOverlay(listener)
 
-                    setTileSource(TileSourceFactory.MAPNIK)
-                    setMultiTouchControls(true)
-                    minZoomLevel = 9.0
-                    maxZoomLevel = 20.0
-                    overlays.add(overlayListener)
 
-                    controller.apply {
-                        setZoom(8.0)
-                        setCenter(startPoint)
+                    override fun longPressHelper(p: GeoPoint?): Boolean {
+                        return false
                     }
-                    zoomController.setVisibility(
-                        CustomZoomButtonsController.Visibility.NEVER
-                    )
-
-
-                    invalidate()
-
+                }
+            },
+            initMap = { mapView ->
+                marker = Marker(mapView).apply {
+                    icon = ActivityCompat.getDrawable(context, R.drawable.ic_add_location)
+                    selectGeoPoint?.let { selectGeoPoint ->
+                        position = selectGeoPoint.toGeoPoint()
+                        mapView.controller.setCenter(selectGeoPoint.toGeoPoint())
+                    }
                 }
             }
         )
@@ -184,17 +119,6 @@ fun SetGeoPointScreen(
                     text = stringResource(id = R.string.confirm)
                 )
             }
-            
         }
-        
-    }
-    
-
-    LaunchedEffect(key1 = Unit){
-//      Return string res for top app bar title
-        navController.returnResult(
-            context.getString(R.string.top_app_bar_title_observe_nav_key),
-            context.getString(R.string.set_geo_point_screen_title)
-        )
     }
 }

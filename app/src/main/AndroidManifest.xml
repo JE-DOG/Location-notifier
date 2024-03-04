@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
 
-        <service android:name="ru.je_dog.feature.location_list.service.BroadcastLocationService"/>
+        <service android:name="ru.je_dog.core.feature.common.background_service.BroadcastLocationService"/>
     </application>
 
 </manifest>

@@ -1,9 +1,8 @@
 package ru.je_dog.feature.location_list
 
 import android.content.Intent
-import android.content.res.Resources
+import android.util.Log
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,31 +27,29 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.observeOn
-import kotlinx.coroutines.flow.onEach
-import ru.je_dog.core.feature.base.ui.screen.EmptyListScreen
-import ru.je_dog.core.feature.base.ui.screen.ErrorScreen
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.common.screen.EmptyListScreen
+import ru.je_dog.core.feature.common.screen.ErrorScreen
 import ru.je_dog.core.feature.ext.observeResult
-import ru.je_dog.core.feature.ext.removeResult
-import ru.je_dog.core.feature.ext.returnResult
 import ru.je_dog.core.feature.model.GeoPointPresentation
-import ru.je_dog.feature.location_list.service.BroadcastLocationService
+import ru.je_dog.core.feature.common.background_service.BroadcastLocationService
+import ru.je_dog.feature.location_list.ui_elements.location_item.LocationItemMoreAction
 import ru.je_dog.feature.location_list.ui_elements.location_item.locationList
 import ru.je_dog.feature.location_list.vm.LocationListAction
 import ru.je_dog.feature.location_list.vm.LocationListViewModel
-import java.lang.IllegalArgumentException
-import kotlin.random.Random
 
 @Composable
 internal fun LocationListScreen(
     navController: NavController,
     viewModel: LocationListViewModel,
-    navigateToSetGeoPoint: () -> Unit
+    navigateToSetGeoPoint: (GeoPointPresentation?) -> Unit
 ) {
 
     val state = viewModel.state.collectAsState().value
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     Box {
 
@@ -73,12 +70,33 @@ internal fun LocationListScreen(
 
                         locationList(
                             state.locations,
-                            onMoreClick = {
-                                viewModel.action(it)
+                            onMoreClick = { locationAction ->
+                                when(locationAction){
+                                    is LocationItemMoreAction.Update -> {
+                                        navigateToSetGeoPoint(locationAction.geoPoint)
+                                        scope.launch {
+                                            val observeKey = context.getString(R.string.set_geo_point_update_observe_nav_key)
+                                            navController.observeResult(observeKey,null as GeoPointPresentation?)
+                                                ?.collect {  updatedGeoPoint ->
+                                                    Log.d("ObserveTag",updatedGeoPoint.toString())
+                                                    if (updatedGeoPoint != null){
+                                                        val action = LocationListAction.UpdateLocation(updatedGeoPoint)
+                                                        viewModel.action(action)
+                                                        cancel()
+                                                    }
+                                                }
+                                        }
+                                    }
+
+                                    is LocationItemMoreAction.Delete -> {
+                                        val action = LocationListAction.DeleteLocation(locationAction.geoPoint)
+                                        viewModel.action(action)
+                                    }
+                                }
                             },
                             onItemClick = {
                                 //todo Make it better
-                                val intent = Intent(context,BroadcastLocationService::class.java).apply {
+                                val intent = Intent(context, BroadcastLocationService::class.java).apply {
                                     val geoPointKey: String = context.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
                                     putExtra(geoPointKey,it)
                                 }
@@ -91,8 +109,8 @@ internal fun LocationListScreen(
                 }else {
 
                     EmptyListScreen(
-                        ru.je_dog.core.feature.R.drawable.ic_add_location,
-                        stringResource(id = ru.je_dog.core.feature.R.string.location_list_empty)
+                        R.drawable.ic_add_location,
+                        stringResource(id = R.string.location_list_empty)
                     )
 
                 }
@@ -106,7 +124,7 @@ internal fun LocationListScreen(
                             color = MaterialTheme.colorScheme.primary,
                             shape = CircleShape
                         ),
-                    onClick = navigateToSetGeoPoint
+                    onClick = { navigateToSetGeoPoint(null) }
                 ){
                     Icon(
                         modifier = Modifier
@@ -136,20 +154,14 @@ internal fun LocationListScreen(
     }
 
     LaunchedEffect(key1 = Unit){
-
-//        Return string res for top app bar title
-        navController.returnResult(
-            context.getString(ru.je_dog.core.feature.R.string.top_app_bar_title_observe_nav_key),
-            context.getString(ru.je_dog.core.feature.R.string.location_list_screen_title)
-        )
 //        Observe result geo point from set-geo-point screen
         navController.observeResult(
-                context.getString(ru.je_dog.core.feature.R.string.set_geo_point_observe_nav_key),
+                context.getString(ru.je_dog.core.feature.R.string.set_geo_point_create_observe_nav_key),
                 null as GeoPointPresentation?
             )
             ?.collect { geoPoint ->
                 if (geoPoint != null){
-                    val intent = Intent(context,BroadcastLocationService::class.java).apply {
+                    val intent = Intent(context, BroadcastLocationService::class.java).apply {
                         val geoPointKey = context.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
                         putExtra(geoPointKey,geoPoint)
                     }

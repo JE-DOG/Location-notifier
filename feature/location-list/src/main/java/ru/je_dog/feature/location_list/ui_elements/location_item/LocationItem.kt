@@ -13,11 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
-import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.IconButton
@@ -36,18 +33,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.PopupProperties
 import org.jetbrains.annotations.VisibleForTesting
-import ru.je_dog.core.feature.ext.getShapeByIndex
 import ru.je_dog.core.feature.model.GeoPointPresentation
-import ru.je_dog.feature.location_list.R
 import ru.je_dog.feature.location_list.vm.LocationListAction
 
 @Composable
 internal fun LocationItem(
     geoPoint: GeoPointPresentation,
     shape: Shape = RoundedCornerShape(0),
-    onMoreClick: (LocationListAction) -> Unit,
+    onMoreClick: (LocationItemMoreAction) -> Unit,
     onItemClick: (GeoPointPresentation) -> Unit
 ) {
 
@@ -89,34 +83,23 @@ internal fun LocationItem(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            stringResource(id = ru.je_dog.core.feature.R.string.update)
-                        )
-                    },
-                    onClick = {
-                        expanded = false
-
-                        onMoreClick(
-                            LocationListAction.UpdateLocation(geoPoint)
-                        )
-                    }
+                val moreActions = listOf(
+                    LocationItemMoreAction.Update(geoPoint),
+                    LocationItemMoreAction.Delete(geoPoint),
                 )
-                DropdownMenuItem(
-                    text = {
-                        Text(
-                            stringResource(id = ru.je_dog.core.feature.R.string.delete)
-                        )
-                    },
-                    onClick = {
-                        expanded = false
-
-                        onMoreClick(
-                            LocationListAction.DeleteLocation(geoPoint)
-                        )
-                    }
-                )
+                moreActions.forEach { locationAction ->
+                    DropdownMenuItem(
+                        text = {
+                            Text(
+                                stringResource(id = locationAction.text)
+                            )
+                        },
+                        onClick = {
+                            expanded = false
+                            onMoreClick(locationAction)
+                        }
+                    )
+                }
             }
         }
 

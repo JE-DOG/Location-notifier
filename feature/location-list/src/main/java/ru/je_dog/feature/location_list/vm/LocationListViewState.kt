@@ -1,6 +1,6 @@
 package ru.je_dog.feature.location_list.vm
 
-import ru.je_dog.core.feature.base.vm.ViewState
+import ru.je_dog.core.feature.common.vm.ViewState
 import ru.je_dog.core.feature.model.GeoPointPresentation
 
 data class LocationListViewState(

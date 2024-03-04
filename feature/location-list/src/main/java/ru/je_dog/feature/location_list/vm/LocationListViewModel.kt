@@ -1,6 +1,7 @@
 package ru.je_dog.feature.location_list.vm
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -8,11 +9,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.je_dog.core.ext.add
 import ru.je_dog.core.ext.remove
 import ru.je_dog.core.ext.updateItem
-import ru.je_dog.core.feature.base.vm.BaseViewModel
+import ru.je_dog.core.feature.common.vm.BaseViewModel
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.domain.location_list.use_case.*
 import ru.je_dog.feature.location_list.vm.reducer.LocationListMutation
@@ -27,19 +29,15 @@ internal class LocationListViewModel @Inject constructor(
     private val updateLocationUseCase: UpdateLocationUseCase,
     private val deleteLocationUseCase: DeleteLocationUseCase,
     private val deleteAllLocationUseCase: DeleteAllLocationUseCase
-): BaseViewModel<LocationListViewState,LocationListMutation,LocationListReducer>(
-    MutableStateFlow(LocationListViewState()),
-    LocationListReducer()
-) {
-
+): BaseViewModel<LocationListViewState, LocationListAction>(LocationListViewState()) {
     init {
         action(LocationListAction.GetAllLocation)
     }
 
-    fun action(action: LocationListAction) {
+    private val reducer = LocationListReducer()
 
+    override fun action(action: LocationListAction) {
         viewModelScope.launch(Dispatchers.IO) {
-
             when (action) {
 
                 is LocationListAction.DeleteLocation -> {
@@ -98,13 +96,10 @@ internal class LocationListViewModel @Inject constructor(
                 }
 
             }
-
         }
-
     }
 
     private suspend fun getAllLocation() {
-
         getAllLocationUseCase.execute()
             .onStart {
                 LocationListMutation.ShowLoading.reduce()
@@ -119,8 +114,14 @@ internal class LocationListViewModel @Inject constructor(
                 LocationListMutation.ShowLocations(
                     locations
                 ).reduce()
+                Log.d("GeoPointTag","List: $locations")
             }
+    }
 
+    private fun LocationListMutation.reduce(){
+        viewModelScope.launch {
+            _state.update { reducer.invoke(this@reduce,it) }
+        }
     }
 
 }
