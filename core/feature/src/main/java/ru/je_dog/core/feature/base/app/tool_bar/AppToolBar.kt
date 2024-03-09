@@ -1,6 +1,4 @@
-package ru.je_dog.core.feature.navigation
-
-import androidx.annotation.StringRes
+package ru.je_dog.core.feature.base.app.tool_bar
 
 data class AppToolBar(
     val title: String,

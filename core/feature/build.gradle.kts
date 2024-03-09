@@ -15,8 +15,8 @@ dependencies {
 
     with(libs){
 
-        compileOnly(gms.location)
-        compileOnly(osmdroid)
+        implementation(gms.location)
+        implementation(osmdroid)
 
     }
 

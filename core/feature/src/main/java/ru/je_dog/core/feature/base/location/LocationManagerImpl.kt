@@ -12,7 +12,7 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import org.osmdroid.util.GeoPoint
-import ru.je_dog.core.feature.ext.lineMeters
+import ru.je_dog.core.feature.utills.ext.lineMeters
 import ru.je_dog.core.feature.model.GeoPointPresentation
 
 class LocationManagerImpl(

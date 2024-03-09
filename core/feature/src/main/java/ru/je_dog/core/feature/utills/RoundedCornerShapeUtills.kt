@@ -1,6 +1,5 @@
-package ru.je_dog.core.feature.ext
+package ru.je_dog.core.feature.utills
 
-import android.graphics.drawable.shapes.Shape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp

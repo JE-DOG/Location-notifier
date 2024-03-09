@@ -1,6 +1,5 @@
 package ru.je_dog.feature.location_list
 
-import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -25,9 +24,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import ru.je_dog.core.feature.base.ui.screen.EmptyListScreen
-import ru.je_dog.core.feature.base.ui.screen.ErrorScreen
-import ru.je_dog.core.feature.ext.observeResult
+import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.base.ui.screen.alert.EmptyListScreen
+import ru.je_dog.core.feature.base.ui.screen.alert.ErrorScreen
+import ru.je_dog.core.feature.utills.ext.observeResult
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.feature.location_list.service.BroadcastLocationService
 import ru.je_dog.feature.location_list.ui_elements.location_item.locationList
@@ -84,8 +84,8 @@ internal fun LocationListScreen(
                 }else {
 
                     EmptyListScreen(
-                        ru.je_dog.core.feature.R.drawable.ic_add_location,
-                        stringResource(id = ru.je_dog.core.feature.R.string.location_list_empty)
+                        R.drawable.ic_add_location,
+                        stringResource(id = R.string.location_list_empty)
                     )
 
                 }

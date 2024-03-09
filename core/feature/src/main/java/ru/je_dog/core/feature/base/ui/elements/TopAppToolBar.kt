@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import ru.je_dog.core.feature.navigation.AppToolBar
+import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
 
 @Composable
 fun TopAppToolBar(

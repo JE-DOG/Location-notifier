@@ -20,11 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.base.ui.elements.StopBroadcastLocationDialog
 import ru.je_dog.core.feature.base.ui.elements.TopAppToolBar
 import ru.je_dog.core.feature.base.ui.theme.LocationNotifierTheme
 import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
-import ru.je_dog.core.feature.navigation.AppToolBar
+import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
 import ru.je_dog.feature.location_list.navigation.LOCATION_LIST_ROUTE
 import ru.je_dog.feature.location_list.navigation.locationList
 import ru.je_dog.feature.location_list.service.BroadcastLocationService
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
             val appToolBar = remember {
                 mutableStateOf(
                     AppToolBar(
-                        title = getString(ru.je_dog.core.feature.R.string.app_name)
+                        title = getString(R.string.app_name)
                     )
                 )
             }

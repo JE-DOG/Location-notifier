@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.ext
+package ru.je_dog.core.feature.utills.ext
 
 import android.content.res.Resources
 import androidx.annotation.StringRes

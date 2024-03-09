@@ -1,7 +1,6 @@
-package ru.je_dog.core.feature.navigation
+package ru.je_dog.core.feature.base.app.tool_bar
 
 import androidx.annotation.DrawableRes
-import androidx.navigation.NavController
 import ru.je_dog.core.feature.R
 
 data class AppToolBarItem(

@@ -13,12 +13,12 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import ru.je_dog.core.feature.ext.lineMeters
+import ru.je_dog.core.feature.utills.ext.lineMeters
 import ru.je_dog.core.feature.base.location.LocationManagerImpl
 import ru.je_dog.core.feature.base.notification.ForegroundNotificationChannelService
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.core.feature.base.notification.NotificationChannelService
-import ru.je_dog.core.feature.ext.isServiceActive
+import ru.je_dog.core.feature.utills.ext.isServiceActive
 import java.lang.StringBuilder
 
 class BroadcastLocationService: Service() {

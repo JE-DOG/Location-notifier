@@ -10,7 +10,7 @@ import android.os.Build
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import ru.je_dog.core.feature.R
-import ru.je_dog.core.feature.ext.checkPermission
+import ru.je_dog.core.feature.utills.ext.checkPermission
 
 abstract class NotificationChannelService(
     private val context: Context

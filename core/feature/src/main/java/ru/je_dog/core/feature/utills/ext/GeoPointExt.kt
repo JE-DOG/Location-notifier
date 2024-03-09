@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.ext
+package ru.je_dog.core.feature.utills.ext
 
 import org.osmdroid.util.GeoPoint
 import ru.je_dog.core.feature.model.GeoPointPresentation

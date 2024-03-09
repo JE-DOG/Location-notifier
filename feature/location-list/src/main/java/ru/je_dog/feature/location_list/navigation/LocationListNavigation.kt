@@ -7,7 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
-import ru.je_dog.core.feature.navigation.AppToolBar
+import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
 import ru.je_dog.feature.location_list.LocationListScreen
 import ru.je_dog.feature.location_list.di.DaggerLocationListComponent
 import ru.je_dog.feature.location_list.di.deps.LocationListComponentDepsStore

@@ -8,9 +8,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import org.osmdroid.config.Configuration
 import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
-import ru.je_dog.core.feature.navigation.AppToolBar
-import ru.je_dog.core.feature.navigation.AppToolBarItem
-import ru.je_dog.set_geo_point.R
+import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
+import ru.je_dog.core.feature.base.app.tool_bar.AppToolBarItem
 import ru.je_dog.set_geo_point.SetGeoPointScreen
 
 fun NavGraphBuilder.setGeoPoint(

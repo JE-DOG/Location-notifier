@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.base.ui.screen
+package ru.je_dog.core.feature.base.ui.screen.alert
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -7,7 +7,5 @@ android {
 }
 
 dependencies {
-
     implementation(libs.osmdroid)
-
 }
