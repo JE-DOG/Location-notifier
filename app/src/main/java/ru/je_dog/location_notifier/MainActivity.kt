@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,18 +27,24 @@ import ru.je_dog.core.feature.base.ui.elements.TopAppToolBar
 import ru.je_dog.core.feature.base.ui.theme.LocationNotifierTheme
 import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
 import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
+import ru.je_dog.core.feature.base.app.vm.AppViewModel
 import ru.je_dog.feature.location_list.navigation.LOCATION_LIST_ROUTE
 import ru.je_dog.feature.location_list.navigation.locationList
 import ru.je_dog.feature.location_list.service.BroadcastLocationService
 import ru.je_dog.set_geo_point.navigation.navigateToSetGeoPoint
 import ru.je_dog.set_geo_point.navigation.setGeoPoint
+import javax.inject.Inject
 
 class MainActivity : ComponentActivity() {
 
+    @Inject
+    lateinit var appViewModel: AppViewModel
+    private val appComponent = App.INSTANCE.appComponent
+
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+        appComponent.inject(this)
         super.onCreate(savedInstanceState)
-
         //todo make better
         ActivityCompat.requestPermissions(
             this,
@@ -52,24 +59,18 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-
+            val appState = appViewModel.state.collectAsState()
             val navHostController = rememberNavController()
-            val appToolBar = remember {
-                mutableStateOf(
-                    AppToolBar(
-                        title = getString(R.string.app_name)
-                    )
-                )
-            }
             var showStopBroadcastLocationDialog by remember {
                 mutableStateOf(false)
             }
 
-            if (showStopBroadcastLocationDialog){
+            if (showStopBroadcastLocationDialog) {
                 StopBroadcastLocationDialog(
                     onDismissRequest = { showStopBroadcastLocationDialog = false },
                     onConfirm = {
-                        val myService = Intent(this@MainActivity, BroadcastLocationService::class.java)
+                        val myService =
+                            Intent(this@MainActivity, BroadcastLocationService::class.java)
                         stopService(myService)
 
                         showStopBroadcastLocationDialog = false
@@ -82,35 +83,31 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-
                     Scaffold(
                         topBar = {
-                            TopAppToolBar(appToolBar = appToolBar.value)
+                            TopAppToolBar(appToolBar = appState.value.toolBar)
                         }
                     ) { scaffoldPadding ->
 
-                        CompositionLocalProvider(
-                            LocalAppToolBarTitle provides appToolBar
+                        NavHost(
+                            modifier = Modifier
+                                .padding(scaffoldPadding),
+                            navController = navHostController,
+                            startDestination = LOCATION_LIST_ROUTE
                         ) {
-                            NavHost(
-                                modifier = Modifier
-                                    .padding(scaffoldPadding),
+                            locationList(
+                                appViewModel = appViewModel,
                                 navController = navHostController,
-                                startDestination = LOCATION_LIST_ROUTE
-                            ) {
-
-                                locationList(
-                                    navController = navHostController,
-                                    navigateToSetGeoPoint = navHostController::navigateToSetGeoPoint,
-                                    showStopBroadcastLocationDialog = { showStopBroadcastLocationDialog = true }
-                                )
-                                setGeoPoint(
-                                    navController = navHostController,
-                                    navigateBack = { navHostController.popBackStack() }
-                                )
-
-                            }
+                                navigateToSetGeoPoint = navHostController::navigateToSetGeoPoint,
+                                showStopBroadcastLocationDialog = {
+                                    showStopBroadcastLocationDialog = true
+                                },
+                            )
+                            setGeoPoint(
+                                appViewModel = appViewModel,
+                                navController = navHostController,
+                                navigateBack = { navHostController.popBackStack() },
+                            )
                         }
                     }
                 }

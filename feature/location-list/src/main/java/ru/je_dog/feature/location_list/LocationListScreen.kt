@@ -25,6 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
+import ru.je_dog.core.feature.base.app.vm.AppViewModel
 import ru.je_dog.core.feature.base.ui.screen.alert.EmptyListScreen
 import ru.je_dog.core.feature.base.ui.screen.alert.ErrorScreen
 import ru.je_dog.core.feature.utills.ext.observeResult
@@ -129,7 +131,6 @@ internal fun LocationListScreen(
     }
 
     LaunchedEffect(key1 = Unit){
-
 //        Observe result geo point from set-geo-point screen
         navController.observeResult(
             context.getString(ru.je_dog.core.feature.R.string.set_geo_point_observe_nav_key),

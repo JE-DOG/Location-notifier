@@ -1,11 +1,10 @@
 package ru.je_dog.feature.location_list.vm
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -18,8 +17,6 @@ import ru.je_dog.domain.location_list.use_case.*
 import ru.je_dog.feature.location_list.vm.reducer.LocationListMutation
 import ru.je_dog.feature.location_list.vm.reducer.LocationListReducer
 import javax.inject.Inject
-import javax.inject.Named
-import javax.inject.Qualifier
 
 internal class LocationListViewModel @Inject constructor(
     private val getAllLocationUseCase: GetAllLocationUseCase,
@@ -28,18 +25,17 @@ internal class LocationListViewModel @Inject constructor(
     private val deleteLocationUseCase: DeleteLocationUseCase,
     private val deleteAllLocationUseCase: DeleteAllLocationUseCase
 ): BaseViewModel<LocationListViewState,LocationListMutation,LocationListReducer>(
-    MutableStateFlow(LocationListViewState()),
     LocationListReducer()
 ) {
+    private val _state = MutableStateFlow(LocationListViewState())
+    val state: StateFlow<LocationListViewState> = _state
 
     init {
         action(LocationListAction.GetAllLocation)
     }
 
     fun action(action: LocationListAction) {
-
         viewModelScope.launch(Dispatchers.IO) {
-
             when (action) {
 
                 is LocationListAction.DeleteLocation -> {
@@ -51,7 +47,7 @@ internal class LocationListViewModel @Inject constructor(
 
                         LocationListMutation.ShowLocations(
                             newList
-                        ).reduce()
+                        ).reduce(_state)
                     }
                 }
 
@@ -63,7 +59,7 @@ internal class LocationListViewModel @Inject constructor(
                         val newList = state.value.locations.add(action.geoPoint)
                         LocationListMutation.ShowLocations(
                             newList
-                        ).reduce()
+                        ).reduce(_state)
                     }
                 }
 
@@ -79,7 +75,7 @@ internal class LocationListViewModel @Inject constructor(
                         )
                         LocationListMutation.ShowLocations(
                             newList
-                        ).reduce()
+                        ).reduce(_state)
                     }
                 }
 
@@ -89,28 +85,25 @@ internal class LocationListViewModel @Inject constructor(
                     if (isDeleteAllSuccess){
                         LocationListMutation.ShowLocations(
                             emptyList()
-                        ).reduce()
+                        ).reduce(_state)
                     }
                 }
 
                 is LocationListAction.GetAllLocation -> {
                     getAllLocation()
                 }
-
             }
-
         }
-
     }
 
     private suspend fun getAllLocation() {
 
         getAllLocationUseCase.execute()
             .onStart {
-                LocationListMutation.ShowLoading.reduce()
+                LocationListMutation.ShowLoading.reduce(_state)
             }
             .catch {
-                LocationListMutation.ShowError.reduce()
+                LocationListMutation.ShowError.reduce(_state)
             }
             .map { locationsDomain ->
                 locationsDomain.map { GeoPointPresentation.fromDomain(it) }
@@ -118,7 +111,7 @@ internal class LocationListViewModel @Inject constructor(
             .collect { locations ->
                 LocationListMutation.ShowLocations(
                     locations
-                ).reduce()
+                ).reduce(_state)
             }
 
     }
