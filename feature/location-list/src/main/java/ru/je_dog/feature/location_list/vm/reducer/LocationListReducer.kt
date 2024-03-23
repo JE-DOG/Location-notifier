@@ -6,7 +6,6 @@ import ru.je_dog.feature.location_list.vm.LocationListViewState
 internal class LocationListReducer: Reducer<LocationListViewState,LocationListMutation> {
 
     override fun invoke(mutation: LocationListMutation, currentState: LocationListViewState): LocationListViewState = when(mutation) {
-
         is LocationListMutation.ShowError -> currentState.copy(
             isLoading = false,
             isError = true
@@ -22,7 +21,5 @@ internal class LocationListReducer: Reducer<LocationListViewState,LocationListMu
             isError = false,
             locations = mutation.locations
         )
-
     }
-
 }

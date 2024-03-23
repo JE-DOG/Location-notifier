@@ -1,5 +1,6 @@
 package ru.je_dog.feature.location_list.vm
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,12 +38,10 @@ internal class LocationListViewModel @Inject constructor(
     fun action(action: LocationListAction) {
         viewModelScope.launch(Dispatchers.IO) {
             when (action) {
-
                 is LocationListAction.DeleteLocation -> {
                     val isDeleteSuccess = deleteLocationUseCase.execute(action.geoPoint.toDomain())
 
                     if (isDeleteSuccess){
-
                         val newList = state.value.locations.remove(action.geoPoint)
 
                         LocationListMutation.ShowLocations(
@@ -52,20 +51,15 @@ internal class LocationListViewModel @Inject constructor(
                 }
 
                 is LocationListAction.AddLocation -> {
-
                     val isAddSuccess = addLocationUseCase.execute(action.geoPoint.toDomain())
 
                     if (isAddSuccess){
-                        val newList = state.value.locations.add(action.geoPoint)
-                        LocationListMutation.ShowLocations(
-                            newList
-                        ).reduce(_state)
+                        getAllLocation()
                     }
                 }
 
                 is LocationListAction.UpdateLocation -> {
                     val isUpdateSuccess = updateLocationUseCase.execute(action.geoPoint.toDomain())
-
                     if (isUpdateSuccess){
                         val newList = state.value.locations.updateItem(
                             item = action.geoPoint,
@@ -73,6 +67,7 @@ internal class LocationListViewModel @Inject constructor(
                                 it.id == action.geoPoint.id
                             }
                         )
+
                         LocationListMutation.ShowLocations(
                             newList
                         ).reduce(_state)
@@ -97,7 +92,6 @@ internal class LocationListViewModel @Inject constructor(
     }
 
     private suspend fun getAllLocation() {
-
         getAllLocationUseCase.execute()
             .onStart {
                 LocationListMutation.ShowLoading.reduce(_state)

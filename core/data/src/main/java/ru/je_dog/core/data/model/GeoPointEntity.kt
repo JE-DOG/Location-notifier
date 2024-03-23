@@ -32,14 +32,13 @@ data class GeoPointEntity(
             geoPointDomain: GeoPointDomain
         ): GeoPointEntity{
             geoPointDomain.run {
-
                 return GeoPointEntity(
+                    id = id,
                     name = name,
                     latitude = latitude,
                     longitude = longitude,
                     meters = meters
                 )
-
             }
         }
 

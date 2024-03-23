@@ -8,21 +8,19 @@ import ru.je_dog.feature.location_list.vm.LocationListAction
 
 internal fun LazyListScope.locationList(
     geoPointList: List<GeoPointPresentation>,
-    onMoreClick: (LocationListAction) -> Unit,
+    onUpdate: (GeoPointPresentation) -> Unit,
+    onDelete: (GeoPointPresentation) -> Unit,
     onItemClick: (GeoPointPresentation) -> Unit
 ) {
-
     itemsIndexed(
-        geoPointList
+        geoPointList,
     ){ index,geoPoint ->
-
         LocationItem(
             geoPoint,
             getShapeByIndex(index,geoPointList.size),
-            onMoreClick = onMoreClick,
+            onDelete = onDelete,
+            onUpdate = onUpdate,
             onItemClick = onItemClick
         )
-
     }
-
 }

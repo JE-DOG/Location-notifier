@@ -11,7 +11,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,12 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.core.app.ActivityCompat
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.base.ui.elements.StopBroadcastLocationDialog
 import ru.je_dog.core.feature.base.ui.elements.TopAppToolBar
 import ru.je_dog.core.feature.base.ui.theme.LocationNotifierTheme
-import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
-import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
 import ru.je_dog.core.feature.base.app.vm.AppViewModel
 import ru.je_dog.feature.location_list.navigation.LOCATION_LIST_ROUTE
 import ru.je_dog.feature.location_list.navigation.locationList

@@ -12,6 +12,7 @@ import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.composition.LocalAppToolBarTitle
 import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
 import ru.je_dog.core.feature.base.app.vm.AppViewModel
+import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.feature.location_list.LocationListScreen
 import ru.je_dog.feature.location_list.di.DaggerLocationListComponent
 import ru.je_dog.feature.location_list.di.deps.LocationListComponentDepsStore
@@ -19,7 +20,7 @@ import ru.je_dog.feature.location_list.di.deps.LocationListComponentDepsStore
 fun NavGraphBuilder.locationList(
     appViewModel: AppViewModel,
     navController: NavController,
-    navigateToSetGeoPoint: () -> Unit,
+    navigateToSetGeoPoint: (GeoPointPresentation?) -> Unit,
     showStopBroadcastLocationDialog: () -> Unit
 ) {
     composable(LOCATION_LIST_ROUTE){

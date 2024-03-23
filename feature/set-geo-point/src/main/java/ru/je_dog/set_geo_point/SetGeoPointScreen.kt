@@ -28,11 +28,12 @@ import ru.je_dog.core.feature.model.GeoPointPresentation
 
 @Composable
 fun SetGeoPointScreen(
-    navController: NavController
+    navController: NavController,
+    updatedGeoPoint: GeoPointPresentation? = null
 ) {
     val context = LocalContext.current
     var selectGeoPoint by remember {
-        mutableStateOf(null as GeoPointPresentation?)
+        mutableStateOf(updatedGeoPoint)
     }
     var showDialog by remember {
         mutableStateOf(false)
@@ -57,19 +58,25 @@ fun SetGeoPointScreen(
     Box {
         JMap(
             mapSettings = {
-                val startPoint = GeoPoint(42.0, 49.0)
+                val startPoint = updatedGeoPoint?.mapGeoPoint ?: GeoPoint(42.0, 49.0)
+                val marker = Marker(this@JMap).apply {
+                    icon = ActivityCompat.getDrawable(context, R.drawable.ic_add_location)
+                }
+
                 val listener = object : MapEventsReceiver {
-
-                    val marker = Marker(this@JMap).apply {
-                        icon = ActivityCompat.getDrawable(context, R.drawable.ic_add_location)
-                    }
-
                     override fun singleTapConfirmedHelper(touchGeo: GeoPoint?): Boolean {
                         selectGeoPoint = touchGeo?.run {
-                            GeoPointPresentation(
-                                longitude = longitude,
-                                latitude = latitude
-                            )
+                            if(selectGeoPoint != null){
+                                selectGeoPoint!!.copy(
+                                    longitude = longitude,
+                                    latitude = latitude
+                                )
+                            }else {
+                                GeoPointPresentation(
+                                    longitude = longitude,
+                                    latitude = latitude
+                                )
+                            }
                         }
 
                         marker.position = touchGeo
@@ -83,7 +90,6 @@ fun SetGeoPointScreen(
                     override fun longPressHelper(p: GeoPoint?): Boolean {
                         return false
                     }
-
                 }
                 val overlayListener = MapEventsOverlay(listener)
 
@@ -92,6 +98,12 @@ fun SetGeoPointScreen(
                     setZoom(8.0)
                     setCenter(startPoint)
                 }
+                if (updatedGeoPoint != null){
+                    marker.position = updatedGeoPoint.mapGeoPoint
+                    controller.animateTo(updatedGeoPoint.mapGeoPoint)
+                    overlays.add(marker)
+                }
+                invalidate()
             }
         )
         
@@ -107,9 +119,7 @@ fun SetGeoPointScreen(
                     showDialog = true
                 }
             ) {
-                Text(
-                    text = stringResource(id = R.string.confirm)
-                )
+                Text(text = stringResource(id = R.string.confirm))
             }
         }
     }

@@ -42,10 +42,13 @@ fun CreateGeoPointDialog(
                 .padding(horizontal = 16.dp, vertical = 10.dp)
         ) {
             var inputMeters by remember {
-                mutableStateOf("")
+                val initMeters = if (geoPoint.meters != null){
+                    geoPoint.meters.toString()
+                }else ""
+                mutableStateOf(initMeters)
             }
             var inputName by remember {
-                mutableStateOf("")
+                mutableStateOf(geoPoint.name)
             }
 
             TextField(

@@ -3,6 +3,7 @@ package ru.je_dog.core.feature.model
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 import org.jetbrains.annotations.VisibleForTesting
+import org.osmdroid.util.GeoPoint
 import ru.je_dog.core.domain.model.GeoPointDomain
 import kotlin.random.Random
 
@@ -23,6 +24,11 @@ data class GeoPointPresentation(
         longitude = longitude
     )
 
+    val mapGeoPoint get() = GeoPoint(
+            latitude,
+            longitude
+        )
+
     companion object {
 
         fun fromDomain(geoPointDomain: GeoPointDomain): GeoPointPresentation = geoPointDomain.run {
@@ -30,8 +36,8 @@ data class GeoPointPresentation(
                 id = id,
                 name = name,
                 meters = meters,
-                latitude = longitude,
-                longitude = latitude
+                latitude = latitude,
+                longitude = longitude
             )
         }
 

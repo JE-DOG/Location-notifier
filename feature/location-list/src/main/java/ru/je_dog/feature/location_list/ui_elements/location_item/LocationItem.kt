@@ -41,10 +41,10 @@ import ru.je_dog.feature.location_list.vm.LocationListAction
 internal fun LocationItem(
     geoPoint: GeoPointPresentation,
     shape: Shape = RoundedCornerShape(0),
-    onMoreClick: (LocationListAction) -> Unit,
+    onUpdate: (GeoPointPresentation) -> Unit,
+    onDelete: (GeoPointPresentation) -> Unit,
     onItemClick: (GeoPointPresentation) -> Unit
 ) {
-
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -59,7 +59,6 @@ internal fun LocationItem(
             .padding(horizontal = 16.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         LocationInfo(geoPoint)
 
         Spacer(Modifier.weight(1f))
@@ -85,57 +84,41 @@ internal fun LocationItem(
             ) {
                 DropdownMenuItem(
                     text = {
-                        Text(
-                            stringResource(id = ru.je_dog.core.feature.R.string.update)
-                        )
+                        Text(stringResource(id = ru.je_dog.core.feature.R.string.update))
                     },
                     onClick = {
                         expanded = false
-
-                        onMoreClick(
-                            LocationListAction.UpdateLocation(geoPoint)
-                        )
+                        onUpdate(geoPoint)
                     }
                 )
                 DropdownMenuItem(
                     text = {
-                        Text(
-                            stringResource(id = ru.je_dog.core.feature.R.string.delete)
-                        )
+                        Text(stringResource(id = ru.je_dog.core.feature.R.string.delete))
                     },
                     onClick = {
                         expanded = false
-
-                        onMoreClick(
-                            LocationListAction.DeleteLocation(geoPoint)
-                        )
+                        onDelete(geoPoint)
                     }
                 )
             }
         }
-
     }
-
 }
 
 @Composable
 private fun LocationInfo(
     geoPoint: GeoPointPresentation
 ) {
-
     Column(
         Modifier
             .wrapContentSize()
     ) {
-
         Text(
             text = geoPoint.name,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.background
         )
-
     }
-
 }
 
 @Composable
@@ -145,7 +128,6 @@ private fun LocationInfo(
     showSystemUi = true
 )
 internal fun LocationListPreview(){
-
     val list = GeoPointPresentation.mockList(50)
 
     LazyColumn(
@@ -156,13 +138,11 @@ internal fun LocationListPreview(){
             vertical = 10.dp
         )
     ) {
-
         locationList(
             list,
-            onMoreClick = {},
+            onUpdate = {},
+            onDelete = {},
             onItemClick = {}
         )
-
     }
-
 }

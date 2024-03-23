@@ -1,5 +1,6 @@
 package ru.je_dog.feature.location_list
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -24,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import kotlinx.coroutines.flow.filterIsInstance
 import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.base.app.tool_bar.AppToolBar
 import ru.je_dog.core.feature.base.app.vm.AppViewModel
@@ -41,20 +43,15 @@ internal fun LocationListScreen(
     navController: NavController,
     viewModel: LocationListViewModel,
     showStopBroadcastDialog: () -> Unit,
-    navigateToSetGeoPoint: () -> Unit
+    navigateToSetGeoPoint: (GeoPointPresentation?) -> Unit
 ) {
-
     val state = viewModel.state.collectAsState().value
     val context = LocalContext.current
 
     Box {
-
         if (!state.isError){
-
             if (!state.isLoading){
-
                 if (state.locations.isNotEmpty()){
-
                     LazyColumn(
                         Modifier
                             .fillMaxSize(),
@@ -63,11 +60,14 @@ internal fun LocationListScreen(
                             vertical = 5.dp
                         )
                     ) {
-
                         locationList(
                             state.locations,
-                            onMoreClick = {
-                                viewModel.action(it)
+                            onUpdate = {
+                                navigateToSetGeoPoint(it)
+                            },
+                            onDelete = {
+                                val action = LocationListAction.DeleteLocation(it)
+                                viewModel.action(action)
                             },
                             onItemClick = { geoPoint ->
                                 //todo Make it better
@@ -80,16 +80,12 @@ internal fun LocationListScreen(
                                 }
                             }
                         )
-
                     }
-
                 }else {
-
                     EmptyListScreen(
                         R.drawable.ic_add_location,
                         stringResource(id = R.string.location_list_empty)
                     )
-
                 }
 
                 IconButton(
@@ -101,7 +97,7 @@ internal fun LocationListScreen(
                             color = MaterialTheme.colorScheme.primary,
                             shape = CircleShape
                         ),
-                    onClick = navigateToSetGeoPoint
+                    onClick = { navigateToSetGeoPoint(null) }
                 ){
                     Icon(
                         modifier = Modifier
@@ -111,23 +107,18 @@ internal fun LocationListScreen(
                         contentDescription = "add location"
                     )
                 }
-
             }else {
                 CircularProgressIndicator(
                     Modifier.align(Alignment.Center)
                 )
             }
-
         }else {
-
             Toast.makeText(LocalContext.current, ru.je_dog.core.feature.R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
             ErrorScreen {
                 val action = LocationListAction.GetAllLocation
                 viewModel.action(action)
             }
-
         }
-
     }
 
     LaunchedEffect(key1 = Unit){
@@ -135,20 +126,26 @@ internal fun LocationListScreen(
         navController.observeResult(
             context.getString(ru.je_dog.core.feature.R.string.set_geo_point_observe_nav_key),
             null as GeoPointPresentation?
-        )?.collect { geoPoint ->
-            if (geoPoint != null){
-                val isBroadcastStart = BroadcastLocationService.startBroadcast(
-                    context,
-                    geoPoint
-                )
-                if (!isBroadcastStart){
-                    showStopBroadcastDialog()
-                }
+        )
+            ?.filterIsInstance<GeoPointPresentation>()
+            ?.collect { geoPoint ->
+                Log.d("SomeTag",geoPoint.id.toString())
+                if (geoPoint.id == null){
+                    val isBroadcastStart = BroadcastLocationService.startBroadcast(
+                        context,
+                        geoPoint
+                    )
+                    if (!isBroadcastStart){
+                        showStopBroadcastDialog()
+                    }
 
-                val action = LocationListAction.AddLocation(geoPoint)
-                viewModel.action(action)
+                    val action = LocationListAction.AddLocation(geoPoint)
+                    viewModel.action(action)
+                }else {
+                    val action = LocationListAction.UpdateLocation(geoPoint)
+                    viewModel.action(action)
+                }
             }
-        }
 
     }
 }

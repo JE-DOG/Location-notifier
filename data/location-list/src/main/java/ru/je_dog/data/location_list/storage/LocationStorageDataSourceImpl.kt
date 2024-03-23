@@ -33,11 +33,7 @@ class LocationStorageDataSourceImpl(
     }
 
     override suspend fun deleteLocation(geoPoint: GeoPointDomain): Boolean = isRunWithoutExceptionSuspend {
-        Log.d("DeleteLocationTag",geoPoint.toString())
-
-        val result = locationListDao.deleteLocation(geoPoint.id!!)
-
-        Log.d("DeleteLocationTag",result.toString())
+        locationListDao.deleteLocation(geoPoint.id!!)
     }
 
     override suspend fun deleteAllLocation(): Boolean = isRunWithoutExceptionSuspend {

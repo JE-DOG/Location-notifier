@@ -22,7 +22,7 @@ interface LocationDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addLocation(geoPoint: GeoPointEntity)
 
-    @Update
+    @Update(entity = GeoPointEntity::class, onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateLocation(geoPoint: GeoPointEntity)
 
     @Query("DELETE FROM geo_point_table WHERE id = :geoPointId")

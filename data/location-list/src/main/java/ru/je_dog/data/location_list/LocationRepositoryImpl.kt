@@ -11,8 +11,6 @@ class LocationRepositoryImpl(
 ): LocationRepository {
 
     override fun getAllLocation(): Flow<List<GeoPointDomain>> {
-        Log.d("RoomDataBase","Hello from repository")
-
         return locationStorageDataSource.getAllLocation()
     }
 
