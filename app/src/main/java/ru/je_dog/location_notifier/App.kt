@@ -20,11 +20,9 @@ class App: Application() {
     }
 
     private fun initDI() {
-
         with(appComponent){
             LocationListComponentDepsStore.deps = this
         }
-
     }
 
     companion object {

@@ -1,6 +1,5 @@
 package ru.je_dog.set_geo_point
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Button
@@ -21,44 +20,24 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.MapEventsOverlay
 import org.osmdroid.views.overlay.Marker
 import ru.je_dog.core.feature.R
-import ru.je_dog.core.feature.base.ui.dialogs.geo_point.CreateGeoPointDialog
 import ru.je_dog.core.feature.base.ui.elements.JMap
+import ru.je_dog.core.feature.model.BaseLocation
 import ru.je_dog.core.feature.utills.ext.returnResult
 import ru.je_dog.core.feature.model.GeoPointPresentation
 
 @Composable
 fun SetGeoPointScreen(
-    navController: NavController,
-    updatedGeoPoint: GeoPointPresentation? = null
+    navController: NavController
 ) {
     val context = LocalContext.current
     var selectGeoPoint by remember {
-        mutableStateOf(updatedGeoPoint)
-    }
-    var showDialog by remember {
-        mutableStateOf(false)
-    }
-
-    if (showDialog && selectGeoPoint != null){
-        CreateGeoPointDialog(
-            geoPoint = selectGeoPoint!!,
-            onDismiss = { showDialog = false },
-            onConfirm = { newGeoPoint ->
-                val returnGeoPointKey = context.getString(R.string.set_geo_point_observe_nav_key)
-                navController.returnResult(
-                    returnGeoPointKey,
-                    newGeoPoint
-                )
-
-                navController.popBackStack()
-            }
-        )
+        mutableStateOf<BaseLocation?>(null)
     }
 
     Box {
         JMap(
             mapSettings = {
-                val startPoint = updatedGeoPoint?.mapGeoPoint ?: GeoPoint(42.0, 49.0)
+                val startPoint = GeoPoint(42.0, 49.0)
                 val marker = Marker(this@JMap).apply {
                     icon = ActivityCompat.getDrawable(context, R.drawable.ic_add_location)
                 }
@@ -66,13 +45,13 @@ fun SetGeoPointScreen(
                 val listener = object : MapEventsReceiver {
                     override fun singleTapConfirmedHelper(touchGeo: GeoPoint?): Boolean {
                         selectGeoPoint = touchGeo?.run {
-                            if(selectGeoPoint != null){
+                            if (selectGeoPoint != null) {
                                 selectGeoPoint!!.copy(
                                     longitude = longitude,
                                     latitude = latitude
                                 )
-                            }else {
-                                GeoPointPresentation(
+                            } else {
+                                BaseLocation(
                                     longitude = longitude,
                                     latitude = latitude
                                 )
@@ -98,29 +77,26 @@ fun SetGeoPointScreen(
                     setZoom(8.0)
                     setCenter(startPoint)
                 }
-                if (updatedGeoPoint != null){
-                    marker.position = updatedGeoPoint.mapGeoPoint
-                    controller.animateTo(updatedGeoPoint.mapGeoPoint)
-                    overlays.add(marker)
-                }
                 invalidate()
             }
         )
-        
-        AnimatedVisibility(
+
+        Button(
             modifier = Modifier
+                .fillMaxWidth()
                 .align(Alignment.BottomCenter),
-            visible = selectGeoPoint != null
-        ) {
-            Button(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                onClick = {
-                    showDialog = true
-                }
-            ) {
-                Text(text = stringResource(id = R.string.confirm))
+            enabled = selectGeoPoint != null,
+            onClick = {
+                val returnGeoPointKey = context.getString(R.string.set_geo_point_observe_nav_key)
+                navController.returnResult(
+                    returnGeoPointKey,
+                    selectGeoPoint
+                )
+
+                navController.popBackStack()
             }
+        ) {
+            Text(text = stringResource(id = R.string.confirm))
         }
     }
 }

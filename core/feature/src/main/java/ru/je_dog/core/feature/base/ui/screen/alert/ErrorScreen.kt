@@ -17,8 +17,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.je_dog.core.feature.R
+import ru.je_dog.core.feature.base.ui.theme.LocationNotifierTheme
+
+@Composable
+@Preview(
+    showBackground = true
+)
+private fun ErrorScreenPreview() {
+    LocationNotifierTheme {
+        ErrorScreen(
+            {}
+        )
+    }
+}
 
 @Composable
 fun ErrorScreen(
@@ -55,7 +69,8 @@ fun ErrorScreen(
             onClick = onRetryClick
         ){
             Text(
-                stringResource(R.string.retry)
+                stringResource(R.string.retry),
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
 

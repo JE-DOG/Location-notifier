@@ -12,13 +12,16 @@ val Typography = Typography(
         fontSize = 18.sp
     ),
     titleLarge = TextStyle(
-        fontSize = 16.sp
+        fontSize = 25.sp
     ),
     bodyMedium = TextStyle(
         fontSize = 14.sp
     ),
     titleMedium = TextStyle(
-        fontSize = 12.sp
+        fontSize = 20.sp
+    ),
+    titleSmall = TextStyle(
+        fontSize = 16.sp
     )
     /* Other default text styles to override
     titleLarge = TextStyle(

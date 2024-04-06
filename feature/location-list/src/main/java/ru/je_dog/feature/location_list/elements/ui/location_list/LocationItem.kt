@@ -1,4 +1,4 @@
-package ru.je_dog.feature.location_list.ui_elements.location_item
+package ru.je_dog.feature.location_list.elements.ui.location_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
@@ -35,7 +36,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import org.jetbrains.annotations.VisibleForTesting
 import ru.je_dog.core.feature.model.GeoPointPresentation
-import ru.je_dog.feature.location_list.vm.LocationListAction
+
+@Composable
+@VisibleForTesting
+@Preview
+private fun LocationListPreview(){
+    val list = GeoPointPresentation.mockList(5)
+
+    LazyColumn(
+        contentPadding = PaddingValues(
+            horizontal = 20.dp,
+            vertical = 10.dp
+        )
+    ) {
+        locationList(
+            list,
+            onUpdate = {},
+            onDelete = {},
+            onItemClick = {}
+        )
+    }
+}
 
 @Composable
 internal fun LocationItem(
@@ -50,12 +71,15 @@ internal fun LocationItem(
     }
 
     Row(
-        Modifier
-            .clickable { onItemClick(geoPoint) }
+        modifier = Modifier
             .fillMaxWidth()
             .wrapContentHeight()
             .padding(bottom = 1.dp)
-            .background(MaterialTheme.colorScheme.onPrimary, shape)
+            .clip(shape)
+            .background(MaterialTheme.colorScheme.onPrimary)
+            .clickable {
+                onItemClick(geoPoint)
+            }
             .padding(horizontal = 16.dp, vertical = 5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -116,33 +140,7 @@ private fun LocationInfo(
         Text(
             text = geoPoint.name,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.background
-        )
-    }
-}
-
-@Composable
-@VisibleForTesting
-@Preview(
-    showBackground = true,
-    showSystemUi = true
-)
-internal fun LocationListPreview(){
-    val list = GeoPointPresentation.mockList(50)
-
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentPadding = PaddingValues(
-            horizontal = 20.dp,
-            vertical = 10.dp
-        )
-    ) {
-        locationList(
-            list,
-            onUpdate = {},
-            onDelete = {},
-            onItemClick = {}
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }

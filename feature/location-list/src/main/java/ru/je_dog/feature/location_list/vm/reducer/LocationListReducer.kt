@@ -1,7 +1,7 @@
 package ru.je_dog.feature.location_list.vm.reducer
 
 import ru.je_dog.core.feature.base.vm.reducer.Reducer
-import ru.je_dog.feature.location_list.vm.LocationListViewState
+import ru.je_dog.feature.location_list.elements.state.LocationListViewState
 
 internal class LocationListReducer: Reducer<LocationListViewState,LocationListMutation> {
 
@@ -20,6 +20,23 @@ internal class LocationListReducer: Reducer<LocationListViewState,LocationListMu
             isLoading = false,
             isError = false,
             locations = mutation.locations
+        )
+
+        is LocationListMutation.ShowGeoPointDialog -> currentState.copy(
+            geoPointCreateDialog = mutation.geoPointDialogState
+        )
+
+        is LocationListMutation.HideGeoPointDialog -> currentState.copy(
+            geoPointCreateDialog = null
+        )
+
+        is LocationListMutation.SetLocationForGeoPointDialog -> currentState.copy(
+            geoPointCreateDialog = currentState.geoPointCreateDialog?.apply {
+                geoPoint = geoPoint?.copy(
+                    longitude = mutation.location.longitude,
+                    latitude = mutation.location.latitude,
+                )
+            }
         )
     }
 }

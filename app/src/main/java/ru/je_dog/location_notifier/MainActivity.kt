@@ -94,10 +94,10 @@ class MainActivity : ComponentActivity() {
                             locationList(
                                 appViewModel = appViewModel,
                                 navController = navHostController,
-                                navigateToSetGeoPoint = navHostController::navigateToSetGeoPoint,
                                 showStopBroadcastLocationDialog = {
                                     showStopBroadcastLocationDialog = true
                                 },
+                                navigateToSetGeoPointLocation = navHostController::navigateToSetGeoPoint
                             )
                             setGeoPoint(
                                 appViewModel = appViewModel,

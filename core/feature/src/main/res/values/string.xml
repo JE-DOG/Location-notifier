@@ -25,9 +25,9 @@
     <string name="stop_broadcast_location_message">Do you want stop current broadcast?</string>
 
 <!--  Titles  -->
-    <string name="set_meters_goal_title">Set goal meters</string>
-    <string name="set_goal_meters_title">Set goal meters</string>
-    <string name="set_goal_name_title">Set goal name</string>
+    <string name="set_goal_meters_title">Goal meters</string>
+    <string name="set_goal_name_title">Goal name</string>
+    <string name="set_goal_location_title">Goal location</string>
     <!--  Screens  -->
     <string name="set_geo_point_screen_title">Set location</string>
     <string name="location_list_screen_title">@string/app_name</string>
@@ -42,5 +42,13 @@
     <string name="set_geo_point_observe_nav_key">set_geo_point_observe_nav_key</string>
     <!--  Share preference  -->
     <string name="osmdroid_map_shared_preferences_key">osmdroid_map_shared_preferences_key</string>
+
+<!--  GeoPoint dialog  -->
+    <!--  Create  -->
+    <string name="geo_point_dialog_create_title">Create new</string>
+    <string name="geo_point_dialog_create_on_confirm_button">Create</string>
+    <!--  Update  -->
+    <string name="geo_point_dialog_update_title">Update</string>
+    <string name="geo_point_dialog_update_on_confirm_button">Update</string>
 
 </resources>

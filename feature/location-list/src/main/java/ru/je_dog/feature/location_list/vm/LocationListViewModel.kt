@@ -1,6 +1,5 @@
 package ru.je_dog.feature.location_list.vm
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,12 +8,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import ru.je_dog.core.ext.add
 import ru.je_dog.core.ext.remove
 import ru.je_dog.core.ext.updateItem
 import ru.je_dog.core.feature.base.vm.BaseViewModel
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.domain.location_list.use_case.*
+import ru.je_dog.feature.location_list.elements.state.LocationListViewState
 import ru.je_dog.feature.location_list.vm.reducer.LocationListMutation
 import ru.je_dog.feature.location_list.vm.reducer.LocationListReducer
 import javax.inject.Inject
@@ -86,6 +85,20 @@ internal class LocationListViewModel @Inject constructor(
 
                 is LocationListAction.GetAllLocation -> {
                     getAllLocation()
+                }
+
+                is LocationListAction.ShowGeoPointDialog -> {
+                    LocationListMutation.ShowGeoPointDialog(
+                        action.geoPointDialogState
+                    ).reduce(_state)
+                }
+
+                is LocationListAction.HideGeoPointDialog -> {
+                    LocationListMutation.HideGeoPointDialog.reduce(_state)
+                }
+
+                is LocationListAction.SetLocationForGeoPointDialog -> {
+                    LocationListMutation.SetLocationForGeoPointDialog(action.location).reduce(_state)
                 }
             }
         }

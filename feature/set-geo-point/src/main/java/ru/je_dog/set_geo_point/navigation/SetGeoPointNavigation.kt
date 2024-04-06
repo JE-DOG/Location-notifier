@@ -59,26 +59,9 @@ fun NavGraphBuilder.setGeoPoint(
         )
     ){ navBackEntry ->
         val context = LocalContext.current
-        val isUpdate = navBackEntry.arguments?.getBoolean("isUpdate")!!
-        val updatedGeoPoint = if(isUpdate){
-            val name = navBackEntry.arguments?.getString("name")!!
-            val latitude = navBackEntry.arguments?.getFloat("latitude")!!.toDouble()
-            val longitude = navBackEntry.arguments?.getFloat("longitude")!!.toDouble()
-            val meters = navBackEntry.arguments?.getInt("meters")!!
-            val geoPointId = navBackEntry.arguments?.getInt("geoPointId")!!
-
-            GeoPointPresentation(
-                geoPointId,
-                name,
-                meters,
-                longitude = longitude,
-                latitude = latitude
-            )
-        }else null
 
         SetGeoPointScreen(
-            navController = navController,
-            updatedGeoPoint = updatedGeoPoint
+            navController = navController
         )
 
         LaunchedEffect(Unit){
@@ -97,19 +80,8 @@ fun NavGraphBuilder.setGeoPoint(
     }
 }
 
-fun NavController.navigateToSetGeoPoint(
-    geoPointPresentation: GeoPointPresentation? = null
-) {
-    Log.d("SomeTag","NavController.navigateToSetGeoPoint: ${geoPointPresentation?.id}")
-    navigate(
-        "$SET_GEO_POINT_ROUTE?" +
-                "&isUpdate=${geoPointPresentation != null}" +
-                "&latitude=${geoPointPresentation?.latitude}" +
-                "&longitude=${geoPointPresentation?.longitude}" +
-                "&name=${geoPointPresentation?.name}" +
-                "&meters=${geoPointPresentation?.meters}" +
-                "&geoPointId=${geoPointPresentation?.id}",
-    )
+fun NavController.navigateToSetGeoPoint() {
+    navigate(SET_GEO_POINT_ROUTE)
 }
 
 const val SET_GEO_POINT_ROUTE = "SET_GEO_POINT_ROUTE"
