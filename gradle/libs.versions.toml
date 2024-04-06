@@ -23,6 +23,10 @@
     espresso-core = "3.5.1"
     junit = "4.13.2"
     coroutines = "1.7.3"
+    osmdroid = "6.1.13"
+    gms-location = "21.0.1"
+appcompat = "1.6.1"
+material = "1.11.0"
 
 [libraries]
 
@@ -60,6 +64,11 @@
     dagger-android = { module = "com.google.dagger:dagger-android", version.ref = "dagger" }
     dagger-compiler = { module = "com.google.dagger:dagger-compiler", version.ref = "dagger" }
 
+#Map
+
+    osmdroid = { module = "org.osmdroid:osmdroid-android", version.ref = "osmdroid" }
+    gms-location = { module = "com.google.android.gms:play-services-location", version.ref = "gms-location" }
+
 #Asynchrony
 
     kotlin-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
@@ -79,6 +88,8 @@
 
     android-gradlePlugin = { module = "com.android.tools.build:gradle", version.ref = "agp" }
     kotlin-gradlePlugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 [plugins]
 

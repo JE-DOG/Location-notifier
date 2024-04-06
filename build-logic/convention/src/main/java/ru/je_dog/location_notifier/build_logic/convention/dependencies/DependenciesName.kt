@@ -43,4 +43,9 @@ object DependenciesName {
     //Espresso
     const val  espressoCore = "espresso.core"
 
+//Other
+
+    //Coroutines
+    const val coroutines_core = "kotlin.coroutines.core"
+
 }

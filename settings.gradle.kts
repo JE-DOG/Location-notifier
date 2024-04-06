@@ -16,4 +16,14 @@ dependencyResolutionManagement {
 
 rootProject.name = "LocationNotifier"
 include(":app")
-
+include(":core")
+include(":core:domain")
+include(":core:data")
+include(":core:feature")
+include(":domain")
+include(":domain:location-list")
+include(":data")
+include(":data:location-list")
+include(":feature")
+include(":feature:location-list")
+include(":feature:set-geo-point")

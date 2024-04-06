@@ -1,6 +1,10 @@
+import com.android.build.api.dsl.ApplicationExtension
+import com.android.build.api.dsl.LibraryExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.kotlin.dsl.configure
 import org.gradle.kotlin.dsl.dependencies
+import org.gradle.kotlin.dsl.findByType
 import ru.je_dog.location_notifier.convention.core.ext.androidTestImplementation
 import ru.je_dog.location_notifier.convention.core.ext.androidTestImplementationPlatform
 import ru.je_dog.location_notifier.convention.core.ext.debugImplementation
@@ -15,6 +19,32 @@ class ComposeConventionPlugin: Plugin<Project> {
     override fun apply(target: Project) = with(target) {
 
         val libs = versionCatalog()
+
+        extensions.findByType(LibraryExtension::class)?.let {
+            extensions.configure<LibraryExtension> {
+
+                buildFeatures {
+                    compose = true
+                }
+                composeOptions {
+                    kotlinCompilerExtensionVersion = "1.4.3"
+                }
+
+            }
+        }
+
+        extensions.findByType(ApplicationExtension::class)?.let {
+            extensions.configure<ApplicationExtension> {
+
+                buildFeatures {
+                    compose = true
+                }
+                composeOptions {
+                    kotlinCompilerExtensionVersion = "1.4.3"
+                }
+
+            }
+        }
 
         dependencies {
             with(DependenciesName){
