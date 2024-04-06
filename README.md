@@ -3,9 +3,7 @@
 
 
 ## Скриншоты
-![Скриншот 1](Readme/Screenshot 1.png)
-![Скриншот 2](Readme/Screenshot 2.png)
-![Скриншот 3](Readme/Screenshot 3.png)
+<img alt="Скриншот 1" src="Readme/Screenshot 1.png" width="200"/> <img alt="Скриншот 2" src="Readme/Screenshot 2.png" width="200"/> <img alt="Скриншот 3" src="Readme/Screenshot 3.png" width="200"/>
 
 ## Stack
 ### Architecture
@@ -37,6 +35,5 @@
 - OSMdroid
 - Google location service
 
-## Архитекутар модулей
-
-![Архитекутар модулей](Readme/Modules architecture.jpg)
+## Архитектура модулей
+<img alt="Архитектура модулей" src="Readme/Modules architecture.jpg" width="500"/> 
