@@ -8,7 +8,7 @@ import ru.je_dog.location_notifier.vm.AppViewModelImpl
 import ru.je_dog.location_notifier.vm.reducer.AppViewModelReducerImpl
 
 @Module
-class CoreModule {
+class CommonModule {
 
     @Provides
     fun provideAppViewModelReducer(): AppViewModelReducer {

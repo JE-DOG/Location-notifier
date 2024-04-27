@@ -8,7 +8,7 @@ import ru.je_dog.location_notifier.MainActivity
 
 @Component(
     modules = [
-        CoreModule::class
+        CommonModule::class
     ]
 )
 interface AppComponent: LocationListComponentDeps {
