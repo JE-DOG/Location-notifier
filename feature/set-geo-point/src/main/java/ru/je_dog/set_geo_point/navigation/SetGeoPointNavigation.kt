@@ -19,7 +19,7 @@ import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.set_geo_point.SetGeoPointScreen
 
 fun NavGraphBuilder.setGeoPoint(
-    appViewModel: AppViewModel,
+    changeToolbar: (AppToolBar) -> Unit,
     navController: NavController,
     navigateBack: () -> Unit
 ){
@@ -70,7 +70,7 @@ fun NavGraphBuilder.setGeoPoint(
                 title = context.getString(ru.je_dog.core.feature.R.string.set_geo_point_screen_title),
                 starItem = AppToolBarItem.back(navigateBack)
             )
-            appViewModel.changeToolbar(appToolBar)
+            changeToolbar(appToolBar)
             //Init osmdroid
             Configuration.getInstance().load(
                 context,

@@ -21,8 +21,8 @@ import ru.je_dog.feature.location_list.di.deps.LocationListComponentDepsStore
 import ru.je_dog.feature.location_list.elements.ui.dialogs.geo_point.elements.GeoPointDialogState
 
 fun NavGraphBuilder.locationList(
-    appViewModel: AppViewModel,
     navController: NavController,
+    changeToolBar: (AppToolBar) -> Unit,
     showStopBroadcastLocationDialog: () -> Unit,
     navigateToSetGeoPointLocation: () -> Unit,
 ) {
@@ -49,7 +49,7 @@ fun NavGraphBuilder.locationList(
             val appToolBar = AppToolBar(
                 title = context.getString(R.string.location_list_screen_title)
             )
-            appViewModel.changeToolbar(appToolBar)
+            changeToolBar(appToolBar)
         }
     }
 }
