@@ -40,11 +40,6 @@ fun NavGraphBuilder.locationList(
             navigateToSetGeoPointLocation = navigateToSetGeoPointLocation,
         )
 
-        DisposableEffect(key1 = Unit){
-            onDispose {
-                Log.d("HelloTag","Some")
-            }
-        }
         LaunchedEffect(Unit){
             val appToolBar = AppToolBar(
                 title = context.getString(R.string.location_list_screen_title)
