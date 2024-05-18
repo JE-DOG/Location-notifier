@@ -14,7 +14,7 @@ import ru.je_dog.core.feature.utills.ext.removeResult
 import ru.je_dog.feature.location_list.elements.callback.LocationListCallback
 import ru.je_dog.feature.location_list.elements.ui.dialogs.geo_point.elements.GeoPointDialogStateSaver
 import ru.je_dog.feature.location_list.elements.ui.dialogs.geo_point.elements.GeoPointDialogState
-import ru.je_dog.feature.location_list.service.BroadcastLocationService
+import ru.je_dog.feature.location_list.background_service.BroadcastLocationService
 import ru.je_dog.feature.location_list.vm.LocationListAction
 import ru.je_dog.feature.location_list.vm.LocationListViewModel
 

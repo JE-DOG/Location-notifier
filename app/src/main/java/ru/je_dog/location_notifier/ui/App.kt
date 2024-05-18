@@ -26,7 +26,7 @@ import ru.je_dog.core.feature.base.ui.elements.StopBroadcastLocationDialog
 import ru.je_dog.core.feature.base.ui.elements.TopAppToolBar
 import ru.je_dog.feature.location_list.navigation.LOCATION_LIST_ROUTE
 import ru.je_dog.feature.location_list.navigation.locationList
-import ru.je_dog.feature.location_list.service.BroadcastLocationService
+import ru.je_dog.feature.location_list.background_service.BroadcastLocationService
 import ru.je_dog.location_notifier.ui.permission.PermissionsDialog
 import ru.je_dog.location_notifier.ui.permission.vm.PermissionViewState
 import ru.je_dog.set_geo_point.navigation.navigateToSetGeoPoint

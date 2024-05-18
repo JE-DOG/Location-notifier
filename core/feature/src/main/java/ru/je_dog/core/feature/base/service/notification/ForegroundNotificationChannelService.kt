@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.base.notification
+package ru.je_dog.core.feature.base.service.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

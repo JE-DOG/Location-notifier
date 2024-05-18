@@ -1,4 +1,4 @@
-package ru.je_dog.core.feature.base.location
+package ru.je_dog.core.feature.base.service.location
 
 import android.annotation.SuppressLint
 import android.content.BroadcastReceiver

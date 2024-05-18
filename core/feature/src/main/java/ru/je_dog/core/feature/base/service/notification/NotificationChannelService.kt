@@ -1,10 +1,9 @@
-package ru.je_dog.core.feature.base.notification
+package ru.je_dog.core.feature.base.service.notification
 
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Notification
 import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
@@ -19,7 +18,7 @@ abstract class NotificationChannelService(
     abstract val channel: NotificationChannel
     private val notificationService: NotificationManagerCompat = NotificationManagerCompat.from(context)
 
-    fun createChannel(){
+    fun init(){
         notificationService.createNotificationChannel(
             channel
         )
@@ -29,7 +28,6 @@ abstract class NotificationChannelService(
         notificationId: Int,
         notification: Notification
     ){
-
         context.checkPermission(
             PERMISSION,
             onPermissionDenied = ::onPermissionDenied,
@@ -39,18 +37,17 @@ abstract class NotificationChannelService(
                 notification
             )
         }
-
     }
 
     fun getNotificationBuilder(
         notification: Notification.Builder = Notification.Builder(context),
         notificationBuilder: Notification.Builder.() -> Notification.Builder
     ): Notification.Builder {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
-            notification.apply {
+        notification.apply {
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
                 setChannelId(channel.id)
-                setSmallIcon(R.drawable.ic_launcher_foreground)
             }
+            setSmallIcon(R.drawable.ic_launcher_foreground)
         }
 
         return notificationBuilder(notification)
