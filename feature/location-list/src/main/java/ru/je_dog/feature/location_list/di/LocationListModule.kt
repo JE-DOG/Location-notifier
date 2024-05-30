@@ -5,11 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.Module
 import dagger.Provides
 import ru.je_dog.data.location_list.di.LocationRepositoryModule
+import ru.je_dog.data.location_notification.di.LocationNotificationModule
 import ru.je_dog.feature.location_list.vm.LocationListViewModel
 
 @Module(
     includes = [
-        LocationRepositoryModule::class
+        LocationRepositoryModule::class,
+        LocationNotificationModule::class,
     ]
 )
 internal class LocationListModule {

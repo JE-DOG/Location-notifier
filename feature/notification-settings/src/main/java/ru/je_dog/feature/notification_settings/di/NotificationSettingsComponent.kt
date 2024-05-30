@@ -1,13 +1,13 @@
 package ru.je_dog.feature.notification_settings.di
 
 import dagger.Component
-import ru.je_dog.data.location_notification.di.GetLocationNotificationModule
+import ru.je_dog.data.location_notification.di.LocationNotificationModule
 import ru.je_dog.feature.notification_settings.di.deps.NotificationSettingsComponentDeps
 import ru.je_dog.feature.notification_settings.vm.NotificationSettingsViewModel
 
 @Component(
     modules = [
-        GetLocationNotificationModule::class
+        LocationNotificationModule::class
     ],
     dependencies = [
         NotificationSettingsComponentDeps::class

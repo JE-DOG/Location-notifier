@@ -8,8 +8,14 @@ android {
 
 dependencies {
     with(projects){
-        implementation(domain.locationList)
-        implementation(data.locationList)
+        with(domain){
+            implementation(locationList)
+            implementation(locationNotificattion)
+        }
+        with(data){
+            implementation(locationList)
+            implementation(locationNotification)
+        }
     }
 
     with(libs){

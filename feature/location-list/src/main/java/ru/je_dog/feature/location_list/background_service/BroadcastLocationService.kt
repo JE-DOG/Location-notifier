@@ -38,7 +38,9 @@ class BroadcastLocationService: Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val goalGeoPoint: GeoPointPresentation = intent.getGoalLocation()
+        val goalGeoPoint: GeoPointPresentation = intent.goalLocation
+        val vibrationState = intent.vibrationState
+        val locationUpdateSecondsInterval = intent.locationUpdateSecondsInterval
         val foregroundNotification = foregroundNotificationChannel.getStartBroadcastNotification()
 
         startForeground(
@@ -46,7 +48,9 @@ class BroadcastLocationService: Service() {
             foregroundNotification,
         )
 
-        locationManager.broadcastLocation(5)
+        locationManager.broadcastLocation(
+            secondsInterval = locationUpdateSecondsInterval
+        )
             .catch {
                 Toast.makeText(baseContext, ru.je_dog.core.feature.R.string.something_went_wrong, Toast.LENGTH_SHORT).show()
                 stopSelf()
@@ -61,7 +65,9 @@ class BroadcastLocationService: Service() {
                         GET_TO_LOCATION_NOTIFICATION_ID,
                         getToLocationNotification,
                     )
-                    vibrationService.vibrate(1.seconds)
+                    if (vibrationState){
+                        vibrationService.vibrate(1.seconds)
+                    }
                     stopSelf()
                 }else {
                     val distanceToGoalNotification = foregroundNotificationChannel.getDistanceToGoalNotification(
@@ -135,8 +141,20 @@ class BroadcastLocationService: Service() {
         return notification
     }
 
-    private fun Intent.getGoalLocation(): GeoPointPresentation {
-        val extraKey = baseContext.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
+    private val Intent.locationUpdateSecondsInterval: Int get() {
+        val extraKey = baseContext.getString(ru.je_dog.core.feature.R.string.location_broadcast_location_update_seconds_interval_extra_key)
+
+        return getIntExtra(extraKey,5)
+    }
+
+    private val Intent.vibrationState: Boolean get() {
+        val extraKey = baseContext.getString(ru.je_dog.core.feature.R.string.location_broadcast_vibration_state_extra_key)
+
+        return getBooleanExtra(extraKey,true)
+    }
+
+    private val Intent.goalLocation: GeoPointPresentation get() {
+        val extraKey = baseContext.getString(ru.je_dog.core.feature.R.string.location_broadcast_goal_geo_point_extra_key)
 
         return if (Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU){
             getParcelableExtra(extraKey,GeoPointPresentation::class.java)!!
@@ -155,11 +173,19 @@ class BroadcastLocationService: Service() {
          */
         fun startBroadcast(
             context: Context,
-            geoPoint: GeoPointPresentation
-        ): Boolean{
+            geoPoint: GeoPointPresentation,
+            locationUpdateSecondsInterval: Int = 5,
+            vibrationState: Boolean = true,
+        ): Boolean {
             return if (!context.isServiceActive(BroadcastLocationService::class.java)){
                 val intent = Intent(context, BroadcastLocationService::class.java).apply {
-                    val geoPointKey = context.getString(ru.je_dog.core.feature.R.string.goal_geo_point_extra_key)
+                    val locationUpdateSecondsIntervalExtraKey = context.getString(ru.je_dog.core.feature.R.string.location_broadcast_location_update_seconds_interval_extra_key)
+                    putExtra(locationUpdateSecondsIntervalExtraKey,locationUpdateSecondsInterval)
+
+                    val vibrationStateExtraKey = context.getString(ru.je_dog.core.feature.R.string.location_broadcast_vibration_state_extra_key)
+                    putExtra(vibrationStateExtraKey,vibrationState)
+
+                    val geoPointKey = context.getString(ru.je_dog.core.feature.R.string.location_broadcast_goal_geo_point_extra_key)
                     putExtra(geoPointKey,geoPoint)
                 }
 

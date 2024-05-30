@@ -18,11 +18,8 @@ internal interface LocationListComponent {
 
     @Component.Factory
     interface Factory {
-
         fun create(
             deps: LocationListComponentDeps
         ): LocationListComponent
-
     }
-
 }

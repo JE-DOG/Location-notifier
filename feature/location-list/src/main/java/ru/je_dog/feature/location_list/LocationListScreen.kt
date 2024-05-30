@@ -3,19 +3,24 @@ package ru.je_dog.feature.location_list
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.launch
 import ru.je_dog.core.feature.R
 import ru.je_dog.core.feature.model.BaseLocation
 import ru.je_dog.core.feature.utills.ext.observeResult
 import ru.je_dog.core.feature.model.GeoPointPresentation
+import ru.je_dog.core.feature.utills.ObserveEffect
 import ru.je_dog.core.feature.utills.ext.removeResult
 import ru.je_dog.feature.location_list.elements.callback.LocationListCallback
 import ru.je_dog.feature.location_list.elements.ui.dialogs.geo_point.elements.GeoPointDialogStateSaver
 import ru.je_dog.feature.location_list.elements.ui.dialogs.geo_point.elements.GeoPointDialogState
 import ru.je_dog.feature.location_list.background_service.BroadcastLocationService
 import ru.je_dog.feature.location_list.vm.LocationListAction
+import ru.je_dog.feature.location_list.vm.LocationListEffects
 import ru.je_dog.feature.location_list.vm.LocationListViewModel
 
 @Composable
@@ -25,8 +30,9 @@ internal fun LocationListScreen(
     showStopBroadcastDialog: () -> Unit,
     navigateToSetGeoPointLocation: () -> Unit
 ) {
-    val state = viewModel.state.collectAsState().value
     val context = LocalContext.current
+
+    val state by viewModel.state.collectAsStateWithLifecycle()
 
     LocationListContent(
         state = state,
@@ -80,14 +86,10 @@ internal fun LocationListScreen(
             }
 
             override fun onItemClick(geoPoint: GeoPointPresentation) {
-                //todo Make it better
-                val isBroadcastStart = BroadcastLocationService.startBroadcast(
-                    context,
-                    geoPoint
+                val action = LocationListAction.OnClickItem(
+                    geoPoint = geoPoint
                 )
-                if (!isBroadcastStart){
-                    showStopBroadcastDialog()
-                }
+                viewModel.action(action)
             }
 
             override fun onAddGeoPointClick() {
@@ -104,6 +106,24 @@ internal fun LocationListScreen(
             }
         },
     )
+
+    ObserveEffect(viewModel.effects) {effect ->
+        when(effect) {
+            is LocationListEffects.StartBroadcast -> {
+                val isBroadcastStart = BroadcastLocationService.startBroadcast(
+                    context = context,
+                    geoPoint = effect.geoPointPresentation,
+                    locationUpdateSecondsInterval = effect.locationUpdateSecondsInterval,
+                    vibrationState = effect.vibrationState,
+                )
+                if (!isBroadcastStart){
+                    showStopBroadcastDialog()
+                }
+            }
+
+            null -> {}
+        }
+    }
 
     LaunchedEffect(Unit){
         //Result geo point from set-geo-point screen

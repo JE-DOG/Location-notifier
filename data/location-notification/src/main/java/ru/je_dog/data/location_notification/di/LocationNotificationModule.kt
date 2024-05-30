@@ -11,10 +11,10 @@ import ru.je_dog.domain.location_notificattion.LocationNotificationManager
 
 @Module(
     includes = [
-        GetLocationNotificationBindModule::class
+        LocationNotificationBindModule::class
     ]
 )
-class GetLocationNotificationModule {
+class LocationNotificationModule {
 
     @Provides
     fun provideGetLocationNotificationSettingsStorageDataSource(
@@ -37,7 +37,7 @@ class GetLocationNotificationModule {
 }
 
 @Module
-interface GetLocationNotificationBindModule {
+interface LocationNotificationBindModule {
     @Binds
     fun provideGetLocationNotificationManagerWrite(mixed: LocationNotificationManager.Mixed): LocationNotificationManager.Read
     @Binds

@@ -43,8 +43,10 @@
 
 <!--  Keys  -->
     <!--  Extra  -->
-    <string name="meters_extra_key">meters_extra_key</string>
-    <string name="goal_geo_point_extra_key">goal_geo_point_extra_key</string>
+    <string name="location_broadcast_meters_extra_key">meters_extra_key</string>
+    <string name="location_broadcast_goal_geo_point_extra_key">goal_geo_point_extra_key</string>
+    <string name="location_broadcast_vibration_state_extra_key">vibration_state_extra_key</string>
+    <string name="location_broadcast_location_update_seconds_interval_extra_key">location_update_seconds_interval_extra_key</string>
     <!--  Compose nav state key  -->
     <string name="set_geo_point_observe_nav_key">set_geo_point_observe_nav_key</string>
     <!--  Share preference  -->
