@@ -27,6 +27,8 @@ import ru.je_dog.core.feature.base.ui.elements.TopAppToolBar
 import ru.je_dog.feature.location_list.navigation.LOCATION_LIST_ROUTE
 import ru.je_dog.feature.location_list.navigation.locationList
 import ru.je_dog.feature.location_list.background_service.BroadcastLocationService
+import ru.je_dog.feature.notification_settings.navigation.navigateToNotificationSettings
+import ru.je_dog.feature.notification_settings.navigation.notificationSettings
 import ru.je_dog.location_notifier.ui.permission.PermissionsDialog
 import ru.je_dog.location_notifier.ui.permission.vm.PermissionViewState
 import ru.je_dog.set_geo_point.navigation.navigateToSetGeoPoint
@@ -94,12 +96,17 @@ fun AppUi(
                     showStopBroadcastLocationDialog = {
                         showStopBroadcastLocationDialog = true
                     },
-                    navigateToSetGeoPointLocation = navHostController::navigateToSetGeoPoint
+                    navigateToSetGeoPointLocation = navHostController::navigateToSetGeoPoint,
+                    navigateToNotificationSettings = navHostController::navigateToNotificationSettings,
                 )
                 setGeoPoint(
                     changeToolbar = changeToolBar,
                     navController = navHostController,
-                    navigateBack = { navHostController.popBackStack() },
+                    navigateBack = navHostController::popBackStack,
+                )
+                notificationSettings(
+                    changeToolBar = changeToolBar,
+                    navigateToBack = navHostController::popBackStack,
                 )
             }
         }

@@ -47,7 +47,7 @@ abstract class NotificationChannelService(
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
                 setChannelId(channel.id)
             }
-            setSmallIcon(R.drawable.ic_launcher_foreground)
+            setSmallIcon(R.drawable.app_icon)
         }
 
         return notificationBuilder(notification)

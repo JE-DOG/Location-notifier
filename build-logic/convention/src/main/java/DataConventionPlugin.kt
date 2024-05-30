@@ -18,28 +18,31 @@ class DataConventionPlugin: Plugin<Project> {
         val libs = versionCatalog()
 
         with(pluginManager){
-
             applyIfNotFind("je_dog.android.library")
+        }
 
+        extensions.configure<KaptExtension> {
+            arguments {
+                arg(
+                    "room.schemaLocation",
+                    "$projectDir/schemas"
+                )
+            }
         }
 
         dependencies {
-
             with(DependenciesName){
                 with(libs){
-
                     //Room
                     implementation(findLibrary(room))
                     implementation(findLibrary(room_ktx))
                     kapt(findLibrary(room_compiler))
-
                 }
             }
 
             implementationProject(":core")
             implementationProject(":core:data")
             implementationProject(":core:domain")
-
         }
 
     }

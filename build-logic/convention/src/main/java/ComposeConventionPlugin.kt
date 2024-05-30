@@ -22,34 +22,29 @@ class ComposeConventionPlugin: Plugin<Project> {
 
         extensions.findByType(LibraryExtension::class)?.let {
             extensions.configure<LibraryExtension> {
-
                 buildFeatures {
                     compose = true
                 }
                 composeOptions {
                     kotlinCompilerExtensionVersion = "1.4.3"
                 }
-
             }
         }
 
         extensions.findByType(ApplicationExtension::class)?.let {
             extensions.configure<ApplicationExtension> {
-
                 buildFeatures {
                     compose = true
                 }
                 composeOptions {
                     kotlinCompilerExtensionVersion = "1.4.3"
                 }
-
             }
         }
 
         dependencies {
             with(DependenciesName){
                 with(libs) {
-
                     implementation(findLibrary(compose_navigation))
 
                     implementationPlatform(findLibrary(composeBom))
@@ -60,6 +55,7 @@ class ComposeConventionPlugin: Plugin<Project> {
                     implementation(findLibrary(composeMaterial))
                     implementation(findLibrary(androidxActivityCompose))
                     implementation(findLibrary(composeUiToolingPreview))
+                    implementation(findLibrary(androidxLifecycleRuntimeCompose))
 
                     testImplementation(findLibrary(composeJunitUiTest))
 
@@ -71,12 +67,8 @@ class ComposeConventionPlugin: Plugin<Project> {
                     androidTestImplementation(findLibrary(composeJunitUiTestManifest))
                     androidTestImplementation(findLibrary(composeJunitUiTest))
                     androidTestImplementation(findLibrary(composeJunitUiTooling))
-
                 }
-
             }
         }
-
     }
-
 }

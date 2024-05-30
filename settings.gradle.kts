@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -28,7 +30,9 @@ include(":domain:location-notificattion")
 //Data
 include(":data")
 include(":data:location-list")
+include(":data:location-notification")
 //Feature
 include(":feature")
 include(":feature:location-list")
 include(":feature:set-geo-point")
+include(":feature:notification-settings")
