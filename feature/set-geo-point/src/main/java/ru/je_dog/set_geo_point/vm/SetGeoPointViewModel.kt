@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.osmdroid.util.GeoPoint
-import ru.je_dog.core.feature.base.location.LocationManager
+import ru.je_dog.core.feature.base.service.location.LocationManager
 import ru.je_dog.core.feature.model.BaseLocation
 import ru.je_dog.set_geo_point.vm.components.SetGeoPointAction
 import ru.je_dog.set_geo_point.vm.components.SetGeoPointEffect

@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import org.jetbrains.annotations.VisibleForTesting
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -65,6 +66,19 @@ fun LocationNotifierTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,
+        content = content
+    )
+}
+
+@VisibleForTesting
+@Composable
+fun LocationNotifierPreviewTheme(
+    darkTheme: Boolean = true,
+    content: @Composable () -> Unit,
+) {
+    LocationNotifierTheme(
+        darkTheme = darkTheme,
+        dynamicColor = false,
         content = content
     )
 }

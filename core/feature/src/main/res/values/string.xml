@@ -2,10 +2,14 @@
 <resources>
     <string name="app_name">Location notifier</string>
 
+<!--  Common  -->
+    <string name="second">%d s</string>
+
 <!--Notification message-->
-    <string name="notification_location_goal_notify_title">You got to the location</string>
+    <string name="notification_location_goal_notify_title">You get to the %s</string>
     <string name="notification_location_start_notify_title">Broadcast location start</string>
-    <string name="notification_location_active_notify_title">Meters to the location: </string>
+    <string name="notification_location_active_notify_title">Distance to the %s</string>
+    <string name="notification_location_active_notify_description">%d meters</string>
 <!--  Permissions  -->
     <string name="necessary_permissions">Necessary permissions for Location notifier</string>
     <string name="permission_location">Location</string>
@@ -39,8 +43,10 @@
 
 <!--  Keys  -->
     <!--  Extra  -->
-    <string name="meters_extra_key">meters_extra_key</string>
-    <string name="goal_geo_point_extra_key">goal_geo_point_extra_key</string>
+    <string name="location_broadcast_meters_extra_key">meters_extra_key</string>
+    <string name="location_broadcast_goal_geo_point_extra_key">goal_geo_point_extra_key</string>
+    <string name="location_broadcast_vibration_state_extra_key">vibration_state_extra_key</string>
+    <string name="location_broadcast_location_update_seconds_interval_extra_key">location_update_seconds_interval_extra_key</string>
     <!--  Compose nav state key  -->
     <string name="set_geo_point_observe_nav_key">set_geo_point_observe_nav_key</string>
     <!--  Share preference  -->
@@ -53,4 +59,10 @@
     <!--  Update  -->
     <string name="geo_point_dialog_update_title">Update</string>
     <string name="geo_point_dialog_update_on_confirm_button">Update</string>
+
+<!--  Notification settings  -->
+    <string name="notification_settings_screen">Notification settings</string>
+    <string name="notification_settings_screen_vibration">Notification vibration</string>
+    <string name="notification_settings_screen_location_update_seconds_interval">Location update seconds interval</string>
+    <string name="notification_settings_screen_location_update_seconds_interval_slider_label">@string/second</string>
 </resources>

@@ -1,3 +1,5 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -16,14 +18,21 @@ dependencyResolutionManagement {
 
 rootProject.name = "LocationNotifier"
 include(":app")
+//Core
 include(":core")
 include(":core:domain")
 include(":core:data")
 include(":core:feature")
+//Domain
 include(":domain")
 include(":domain:location-list")
+include(":domain:location-notificattion")
+//Data
 include(":data")
 include(":data:location-list")
+include(":data:location-notification")
+//Feature
 include(":feature")
 include(":feature:location-list")
 include(":feature:set-geo-point")
+include(":feature:notification-settings")

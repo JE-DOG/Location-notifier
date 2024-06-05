@@ -3,7 +3,7 @@
 
 
 ## Скриншоты
-<img alt="Скриншот 1" src="Readme/Screenshot 1.png" width="200"/> <img alt="Скриншот 2" src="Readme/Screenshot 2.png" width="200"/> <img alt="Скриншот 3" src="Readme/Screenshot 3.png" width="200"/>
+<img alt="Скриншот 1" src="Readme/Screenshot 1.png" width="200"/> <img alt="Скриншот 2" src="Readme/Screenshot 2.png" width="200"/> <img alt="Скриншот 3" src="Readme/Screenshot 3.png" width="200"/> <img alt="Скриншот 4" src="Readme/Screenshot 4.png" width="200"/>
 
 ## Stack
 ### Architecture

@@ -1,13 +1,12 @@
 package ru.je_dog.core.feature.utills.ext
 
-import org.osmdroid.util.GeoPoint
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import kotlin.math.asin
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-infix fun GeoPointPresentation.lineMeters(point: GeoPointPresentation): Int {
+infix fun GeoPointPresentation.distanceInMeters(point: GeoPointPresentation): Int {
 
     val lon1 = Math.toRadians(point.longitude)
     val lon2 = Math.toRadians(longitude)

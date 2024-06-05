@@ -3,8 +3,8 @@ package ru.je_dog.location_notifier.di
 import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
-import ru.je_dog.core.feature.base.location.LocationManager
 import ru.je_dog.feature.location_list.di.deps.LocationListComponentDeps
+import ru.je_dog.feature.notification_settings.di.deps.NotificationSettingsComponentDeps
 import ru.je_dog.location_notifier.MainActivity
 import ru.je_dog.set_geo_point.di.deps.SetGeoPointComponentDeps
 
@@ -15,7 +15,8 @@ import ru.je_dog.set_geo_point.di.deps.SetGeoPointComponentDeps
 )
 interface AppComponent:
     LocationListComponentDeps,
-    SetGeoPointComponentDeps {
+    SetGeoPointComponentDeps,
+    NotificationSettingsComponentDeps {
 
     fun inject(mainActivity: MainActivity)
 

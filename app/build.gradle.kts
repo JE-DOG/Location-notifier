@@ -1,5 +1,3 @@
-import ru.je_dog.location_notifier.convention.core.ext.implementationProject
-
 plugins {
     id("je_dog.android.application")
     id("je_dog.android.compose")
@@ -10,8 +8,11 @@ android {
 }
 
 dependencies {
-
-    implementationProject(":feature:location-list")
-    implementationProject(":feature:set-geo-point")
-
+    with(projects){
+        with(feature){
+            implementation(locationList)
+            implementation(setGeoPoint)
+            implementation(notificationSettings)
+        }
+    }
 }
