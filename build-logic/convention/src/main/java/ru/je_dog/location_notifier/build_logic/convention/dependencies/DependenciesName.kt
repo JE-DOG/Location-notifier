@@ -2,10 +2,11 @@ package ru.je_dog.location_notifier.build_logic.convention.dependencies
 
 object DependenciesName {
 
-    //AndroidX
+//AndroidX
     const val androidxActivityCompose = "androidx.activity.compose"
     const val androidxCoreKtx = "androidx.core.ktx"
     const val androidxLifecycleRuntimeKtx = "androidx.core.ktx"
+    const val androidxLifecycleRuntimeCompose = "androidx.lifecycle.runtime.compose"
 
 //Compose
 

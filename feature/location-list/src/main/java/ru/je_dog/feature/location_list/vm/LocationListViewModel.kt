@@ -2,17 +2,22 @@ package ru.je_dog.feature.location_list.vm
 
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.je_dog.core.ext.remove
 import ru.je_dog.core.ext.updateItem
 import ru.je_dog.core.feature.base.vm.BaseViewModel
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.domain.location_list.use_case.*
+import ru.je_dog.domain.location_notificattion.LocationNotificationManager
 import ru.je_dog.feature.location_list.elements.state.LocationListViewState
 import ru.je_dog.feature.location_list.vm.reducer.LocationListMutation
 import ru.je_dog.feature.location_list.vm.reducer.LocationListReducer
@@ -23,12 +28,16 @@ internal class LocationListViewModel @Inject constructor(
     private val addLocationUseCase: AddLocationUseCase,
     private val updateLocationUseCase: UpdateLocationUseCase,
     private val deleteLocationUseCase: DeleteLocationUseCase,
-    private val deleteAllLocationUseCase: DeleteAllLocationUseCase
+    private val deleteAllLocationUseCase: DeleteAllLocationUseCase,
+    private val locationNotificationManager: LocationNotificationManager.Read,
 ): BaseViewModel<LocationListViewState,LocationListMutation,LocationListReducer>(
     LocationListReducer()
 ) {
     private val _state = MutableStateFlow(LocationListViewState())
     val state: StateFlow<LocationListViewState> = _state
+
+    private val _effects: MutableStateFlow<LocationListEffects?> = MutableStateFlow(null)
+    val effects: StateFlow<LocationListEffects?> = _effects
 
     init {
         action(LocationListAction.GetAllLocation)
@@ -100,8 +109,35 @@ internal class LocationListViewModel @Inject constructor(
                 is LocationListAction.SetLocationForGeoPointDialog -> {
                     LocationListMutation.SetLocationForGeoPointDialog(action.location).reduce(_state)
                 }
+
+                is LocationListAction.OnClickItem -> {
+                    onItemClick(
+                        geoPoint = action.geoPoint
+                    )
+                }
             }
         }
+    }
+
+    private fun onItemClick(
+        geoPoint: GeoPointPresentation
+    ) = viewModelScope.launch {
+        val vibrationState = async {
+            locationNotificationManager.getVibrationStatus().first()
+        }
+        val locationUpdateSecondsInterval = async {
+            locationNotificationManager.getLocationUpdateSecondsInterval().first()
+        }
+
+        _effects.update {
+            LocationListEffects.StartBroadcast(
+                geoPointPresentation = geoPoint,
+                vibrationState = vibrationState.await(),
+                locationUpdateSecondsInterval = locationUpdateSecondsInterval.await(),
+            )
+        }
+        delay(50)
+        _effects.update { null }
     }
 
     private suspend fun getAllLocation() {

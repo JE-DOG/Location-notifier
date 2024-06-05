@@ -1,5 +1,3 @@
-import ru.je_dog.location_notifier.convention.core.ext.implementationProject
-
 plugins{
     id("je_dog.feature")
 }
@@ -9,14 +7,18 @@ android {
 }
 
 dependencies {
-
-    implementationProject(":domain:location-list")
-    implementationProject(":data:location-list")
-
-    with(libs){
-
-        implementation(gms.location)
-
+    with(projects){
+        with(domain){
+            implementation(locationList)
+            implementation(locationNotificattion)
+        }
+        with(data){
+            implementation(locationList)
+            implementation(locationNotification)
+        }
     }
 
+    with(libs){
+        implementation(gms.location)
+    }
 }

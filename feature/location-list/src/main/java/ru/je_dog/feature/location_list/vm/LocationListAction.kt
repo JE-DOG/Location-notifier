@@ -19,6 +19,10 @@ internal sealed interface LocationListAction: Action {
         val geoPoint: GeoPointPresentation
     ): LocationListAction
 
+    data class OnClickItem(
+        val geoPoint: GeoPointPresentation
+    ): LocationListAction
+
     object GetAllLocation: LocationListAction
 
     object DeleteAllLocation: LocationListAction
