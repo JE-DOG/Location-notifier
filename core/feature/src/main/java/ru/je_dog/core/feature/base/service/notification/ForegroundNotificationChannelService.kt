@@ -14,7 +14,7 @@ class ForegroundNotificationChannelService(
     override val channel: NotificationChannel = NotificationChannel(
         CHANNEL_ID,
         NAME,
-        NotificationManager.IMPORTANCE_HIGH
+        NotificationManager.IMPORTANCE_LOW
     )
 
     companion object {

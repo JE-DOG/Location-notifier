@@ -13,11 +13,13 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.retry
 import ru.je_dog.core.feature.utills.ext.distanceInMeters
 import ru.je_dog.core.feature.base.service.location.LocationManagerImpl
 import ru.je_dog.core.feature.base.service.notification.ForegroundNotificationChannelService
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.core.feature.base.service.notification.NotificationChannelService
+import ru.je_dog.core.feature.base.service.vibration.VibrationService
 import ru.je_dog.core.feature.base.service.vibration.VibrationServiceImpl
 import ru.je_dog.core.feature.utills.ext.isServiceActive
 import ru.je_dog.core.feature.utills.ext.seconds
@@ -30,7 +32,7 @@ class BroadcastLocationService: Service() {
             init()
         }
     }
-    private val vibrationService by lazy {
+    private val vibrationService: VibrationService by lazy {
         VibrationServiceImpl(baseContext)
     }
     private val lifecycleScope = CoroutineScope(Dispatchers.Main)
@@ -59,25 +61,14 @@ class BroadcastLocationService: Service() {
                 val metersToGoal = geoPoint distanceInMeters goalGeoPoint
 
                 if (metersToGoal <= goalGeoPoint.meters!!){
-                    val getToLocationNotification = foregroundNotificationChannel.getGetToLocationNotification(goalGeoPoint)
-
-                    foregroundNotificationChannel.notify(
-                        GET_TO_LOCATION_NOTIFICATION_ID,
-                        getToLocationNotification,
+                    actionOnGetToGoal(
+                        goalName = goalGeoPoint.name,
+                        vibrationState = vibrationState
                     )
-                    if (vibrationState){
-                        vibrationService.vibrate(1.seconds)
-                    }
-                    stopSelf()
                 }else {
-                    val distanceToGoalNotification = foregroundNotificationChannel.getDistanceToGoalNotification(
-                        goalGeoPoint = goalGeoPoint,
-                        metersToGoal = metersToGoal
-                    )
-
-                    foregroundNotificationChannel.notify(
-                        FOREGROUND_ACTIVE_NOTIFICATION_ID,
-                        distanceToGoalNotification,
+                    actionOnProgress(
+                        goalGeoPoint.name,
+                        metersToGoal,
                     )
                 }
             }
@@ -86,17 +77,50 @@ class BroadcastLocationService: Service() {
         return START_NOT_STICKY
     }
 
+    private fun actionOnProgress(
+        goalName: String,
+        metersToGoal: Int,
+    ) {
+        val distanceToGoalNotification = foregroundNotificationChannel.getDistanceToGoalNotification(
+            goalName = goalName,
+            metersToGoal = metersToGoal
+        )
+
+        foregroundNotificationChannel.notify(
+            notificationId = FOREGROUND_ACTIVE_NOTIFICATION_ID,
+            notification = distanceToGoalNotification,
+        )
+    }
+
+    private fun actionOnGetToGoal(
+        goalName: String,
+        vibrationState: Boolean,
+    ) {
+        val getToLocationNotification = foregroundNotificationChannel.getGetToLocationNotification(
+            goalName = goalName,
+        )
+
+        foregroundNotificationChannel.notify(
+            notificationId = GET_TO_LOCATION_NOTIFICATION_ID,
+            notification = getToLocationNotification,
+        )
+        if (vibrationState){
+            vibrationService.vibrate(1.seconds)
+        }
+        stopSelf()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         lifecycleScope.cancel()
     }
 
     private fun NotificationChannelService.getGetToLocationNotification(
-        goalGeoPoint: GeoPointPresentation
+        goalName: String,
     ): Notification {
         val notificationTitle = baseContext.getString(
             ru.je_dog.core.feature.R.string.notification_location_goal_notify_title,
-            goalGeoPoint.name
+            goalName
         )
         val notification = getNotificationBuilder {
             setContentTitle(notificationTitle)
@@ -118,12 +142,12 @@ class BroadcastLocationService: Service() {
     }
 
     private fun NotificationChannelService.getDistanceToGoalNotification(
-        goalGeoPoint: GeoPointPresentation,
+        goalName: String,
         metersToGoal: Int,
     ): Notification {
         val notificationTitle = baseContext.getString(
             ru.je_dog.core.feature.R.string.notification_location_active_notify_title,
-            goalGeoPoint.name
+            goalName
         )
         val notificationDescription = baseContext.getString(
             ru.je_dog.core.feature.R.string.notification_location_active_notify_description,
@@ -191,7 +215,9 @@ class BroadcastLocationService: Service() {
 
                 context.startService(intent)
                 true
-            } else false
+            } else {
+                false
+            }
         }
     }
 }

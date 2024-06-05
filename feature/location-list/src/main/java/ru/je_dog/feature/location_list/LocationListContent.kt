@@ -27,6 +27,7 @@ import ru.je_dog.feature.location_list.elements.ui.dialogs.geo_point.GeoPointDia
 import ru.je_dog.feature.location_list.elements.ui.dialogs.geo_point.elements.GeoPointDialogState
 import ru.je_dog.core.feature.base.ui.screen.alert.EmptyListScreen
 import ru.je_dog.core.feature.base.ui.screen.alert.ErrorScreen
+import ru.je_dog.core.feature.base.ui.theme.LocationNotifierPreviewTheme
 import ru.je_dog.core.feature.base.ui.theme.LocationNotifierTheme
 import ru.je_dog.core.feature.model.GeoPointPresentation
 import ru.je_dog.feature.location_list.elements.callback.EmptyLocationListCallback
@@ -40,7 +41,7 @@ import ru.je_dog.feature.location_list.elements.state.LocationListViewState
     showSystemUi = true
 )
 private fun LocationListContentPreview() {
-    LocationNotifierTheme {
+    LocationNotifierPreviewTheme {
         LocationListContent(
             state = LocationListViewState(
                 locations = GeoPointPresentation.mockList(10)
@@ -55,7 +56,7 @@ private fun LocationListContentPreview() {
     showSystemUi = true
 )
 private fun LocationListContentEmptyPreview() {
-    LocationNotifierTheme {
+    LocationNotifierPreviewTheme {
         LocationListContent(
             state = LocationListViewState(),
             callback = EmptyLocationListCallback,
@@ -68,7 +69,7 @@ private fun LocationListContentEmptyPreview() {
     showSystemUi = true
 )
 private fun LocationListContentErrorPreview() {
-    LocationNotifierTheme {
+    LocationNotifierPreviewTheme {
         LocationListContent(
             state = LocationListViewState(
                 isError = true
@@ -83,7 +84,7 @@ private fun LocationListContentErrorPreview() {
     showSystemUi = true
 )
 private fun LocationListContentLoadingPreview() {
-    LocationNotifierTheme {
+    LocationNotifierPreviewTheme {
         LocationListContent(
             modifier = Modifier.fillMaxSize(),
             state = LocationListViewState(
@@ -99,7 +100,7 @@ private fun LocationListContentLoadingPreview() {
     showSystemUi = true
 )
 private fun LocationListContentCreateGeoPointPreview() {
-    LocationNotifierTheme {
+    LocationNotifierPreviewTheme {
         LocationListContent(
             modifier = Modifier.fillMaxSize(),
             state = LocationListViewState(
@@ -115,7 +116,7 @@ private fun LocationListContentCreateGeoPointPreview() {
     showSystemUi = true
 )
 private fun LocationListContentUpdateGeoPointPreview() {
-    LocationNotifierTheme {
+    LocationNotifierPreviewTheme {
         LocationListContent(
             modifier = Modifier.fillMaxSize(),
             state = LocationListViewState(
